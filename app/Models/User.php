@@ -18,7 +18,7 @@ class User extends Authenticatable
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
-  //  use HasProfilePhoto;
+    //  use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -27,7 +27,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name','email','password','rol'];
+    protected $fillable = ['name', 'email', 'password', 'rol'];
 
 
     /**
@@ -47,7 +47,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-   /* protected $appends = [
+    /* protected $appends = [
         'profile_photo_url',
     ]; */
 
@@ -84,4 +84,13 @@ class User extends Authenticatable
     }
 
     
+    public function cart()
+    {
+        // si solo quieres 1 activo:
+        return $this->hasOne(\App\Models\Cart::class)->where('status', 'active');
+    }
+    // si quieres poder acceder a históricos:
+    // public function carts() { return $this->hasMany(Cart::class); }
+
+
 }

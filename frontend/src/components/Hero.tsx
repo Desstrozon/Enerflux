@@ -1,6 +1,6 @@
 import { ArrowRight, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-marketplace.jpg";
+import heroImage from "@/assets/Enerflux Logo.jpg";
 
 const Hero = () => {
   return (
@@ -11,17 +11,18 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-in">
             <div className="inline-block px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">
-              🚀 Plataforma Nueva
+              🚀 Enerflux
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Tu Marketplace
+              Tu Marketplace Solar
               <span className="block text-primary">Profesional</span>
             </h1>
             
             <p className="text-lg text-muted-foreground max-w-lg">
-              Conectamos clientes, proveedores y administradores en una plataforma 
-              moderna y eficiente. Gestiona tu negocio desde un solo lugar.
+              Enerflux te ayuda a encontrar los mejores productos solares de proveedores confiables.
+              Simplifica tu instalacion solar con nuestra ayuda experta y soporte dedicado.
+              
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-4">

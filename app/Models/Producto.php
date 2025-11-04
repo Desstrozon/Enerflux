@@ -11,7 +11,8 @@ class Producto extends Model
 
     protected $table = 'productos';
     protected $primaryKey = 'id_producto';
-    public $timestamps = true;
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'nombre',
@@ -28,4 +29,8 @@ class Producto extends Model
     {
         return $this->belongsTo(User::class, 'id_vendedor');
     }
+    protected $casts = [
+        'precio_base' => 'float',
+        'stock'       => 'int',
+    ];
 }

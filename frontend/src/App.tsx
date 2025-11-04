@@ -4,6 +4,19 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// sweetAlert2 
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+// ✅ Estilos Prime (orden correcto)
+//   1) Tema  2) Core  3) Iconos
+import "primereact/resources/themes/lara-light-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "./index.css";
+
+// Proveedor PrimeReact (para ripple y asegurar estilos “styled”)
+import { PrimeReactProvider } from "primereact/api";
+
 // Páginas públicas
 import Index from "@/pages/Index";
 import NotFound from "@/pages/NotFound";
@@ -15,64 +28,71 @@ import AdminRoute from "@/routes/AdminRoute";
 
 // Páginas del administrador
 import AdminIndex from "@/pages/admin/Index";
-import UsersAdmin from "@/pages/admin/Users";      //  coincide con tu archivo
-import VendedoresAdmin from "@/pages/admin/Vendedores"; //  asegúrate de tener este archivo
+import UsersAdmin from "@/pages/admin/Users";
+import VendedoresAdmin from "@/pages/admin/Vendedores"; 
 import ProductosAdmin from "@/pages/admin/Productos";
 
+// 🛒 Contexto del carrito
+import { CartProvider } from "@/context/CartContext";
 
-// Cliente de React Query
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Públicas */}
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<NotFound />} />
+  <PrimeReactProvider value={{ ripple: true /* 👈 NO pongas unstyled: true */ }}>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
 
-          {/* Panel administrador */}
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <AdminIndex />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/usuarios"
-            element={
-              <AdminRoute>
-                <UsersAdmin />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/vendedores"
-            element={
-              <AdminRoute>
-                <VendedoresAdmin />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/productos"
-            element={
-              <AdminRoute>
-                <ProductosAdmin />
-              </AdminRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+        {/* Carrito disponible en toda la app */}
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Públicas */}
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="*" element={<NotFound />} />
+
+              {/* Panel administrador */}
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminIndex />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/usuarios"
+                element={
+                  <AdminRoute>
+                    <UsersAdmin />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/vendedores"
+                element={
+                  <AdminRoute>
+                    <VendedoresAdmin />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/productos"
+                element={
+                  <AdminRoute>
+                    <ProductosAdmin />
+                  </AdminRoute>
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </PrimeReactProvider>
 );
 
 export default App;
