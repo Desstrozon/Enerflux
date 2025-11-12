@@ -20,7 +20,7 @@ return new class extends Migration {
 
       $t->timestamps();
 
-      // ❌ No usar unique(['user_id','status']) (ver explicación)
+      //  No usar unique(['user_id','status']) (ver explicación)
       $t->index(['user_id', 'status']);
     });
   }

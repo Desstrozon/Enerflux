@@ -39,6 +39,8 @@ const Navbar = () => {
     return r === "admin" || r === "administrador";
   }, [authUser]);
 
+  const isLoggedIn = !!authUser;
+
   const logout = async () => {
     const ok = await confirm(
       "Cerrar sesión",
@@ -57,7 +59,7 @@ const Navbar = () => {
         },
       });
     } catch {
-     
+
     }
 
     localStorage.removeItem("token");
@@ -133,7 +135,9 @@ const Navbar = () => {
             >
               Contacto
             </a>
-
+            {isLoggedIn && (
+              <NavLink to="/mis-pedidos" className="...">Mis pedidos</NavLink>
+            )}
             {isAdmin && (
               <>
                 <span className="opacity-30">|</span>

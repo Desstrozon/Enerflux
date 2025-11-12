@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+
+    'stripe' => [
+    'secret' => env('STRIPE_SECRET'),
+    'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
+
+    // URL pública del frontend para construir las rutas de success/cancel
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:8080'),
+
+
 ];

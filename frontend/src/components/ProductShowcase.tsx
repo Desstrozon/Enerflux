@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star } from "lucide-react";
 import { apiGet } from "@/lib/api";
 import { useCart } from "@/context/CartContext";
+
 type Producto = {
   id_producto: number;
   nombre: string;
@@ -11,6 +12,8 @@ type Producto = {
   categoria: string;
   precio_base: number;
   imagen?: string | null;
+  stock?: number;            // 👈 viene del backend
+  disponible?: boolean;      // 👈 si añadiste el accessor en el modelo
 };
 
 const ProductShowcase = () => {
@@ -43,7 +46,7 @@ const ProductShowcase = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Nuestros Productos</h2>
           <p className="text-lg text-muted-foreground">
-            Descubre todos los productos disponibles en Enerfulx.
+            Descubre todos los productos disponibles en Enerflux.
           </p>
         </div>
 
@@ -52,6 +55,9 @@ const ProductShowcase = () => {
             const imgUrl = p.imagen
               ? `${import.meta.env.VITE_API_BASE_URL.replace("/api", "")}/storage/${p.imagen}`
               : "/default.png";
+
+            // 👇 regla de disponibilidad: usa el accessor o cae a stock>0
+            const disponible = (p.disponible ?? ((p.stock ?? 0) > 0));
 
             return (
               <Card
@@ -63,11 +69,20 @@ const ProductShowcase = () => {
                   <img
                     src={imgUrl}
                     alt={p.nombre}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className={
+                      "w-full h-full object-cover transition-transform duration-500 " +
+                      (disponible ? "group-hover:scale-110" : "grayscale opacity-70")
+                    }
                   />
                   <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
                     {p.categoria}
                   </div>
+
+                  {!disponible && (
+                    <div className="absolute inset-x-0 bottom-0 bg-black/60 text-white text-center py-2 text-sm">
+                      No disponible
+                    </div>
+                  )}
                 </div>
 
                 <CardContent className="p-6">
@@ -85,20 +100,30 @@ const ProductShowcase = () => {
 
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-primary">
-                      {p.precio_base} €
+                      {Number(p.precio_base || 0).toFixed(2)} €
                     </span>
+
                     <Button
                       variant="cta"
                       size="sm"
                       className="group"
-                      onClick={() => addToCart({
-                        id_producto: p.id_producto,
-                        nombre: p.nombre,
-                        precio_base: p.precio_base,
-                        imagen: p.imagen,
-                      })}
+                      disabled={!disponible}
+                      onClick={() => {
+                        if (!disponible) return;
+                        addToCart({
+                          id_producto: p.id_producto,
+                          nombre: p.nombre,
+                          precio_base: p.precio_base,
+                          imagen: p.imagen,
+                          cantidad: 1, // 👈 evita NaN y deja claro el qty
+                        });
+                      }}
                     >
-                      <ShoppingCart className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                      {disponible ? (
+                        <ShoppingCart className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                      ) : (
+                        <span className="text-xs">No disponible</span>
+                      )}
                     </Button>
                   </div>
                 </CardContent>

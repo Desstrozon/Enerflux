@@ -3,12 +3,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import CheckoutSuccess from "@/pages/CheckoutSuccess";
+import CheckoutCancel from "@/pages/CheckoutCancel";
+import MyOrders from "@/pages/MyOrders";
 // sweetAlert2 
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-// ✅ Estilos Prime (orden correcto)
-//   1) Tema  2) Core  3) Iconos
+
 import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -29,7 +30,7 @@ import AdminRoute from "@/routes/AdminRoute";
 // Páginas del administrador
 import AdminIndex from "@/pages/admin/Index";
 import UsersAdmin from "@/pages/admin/Users";
-import VendedoresAdmin from "@/pages/admin/Vendedores"; 
+import VendedoresAdmin from "@/pages/admin/Vendedores";
 import ProductosAdmin from "@/pages/admin/Productos";
 
 // 🛒 Contexto del carrito
@@ -38,7 +39,7 @@ import { CartProvider } from "@/context/CartContext";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <PrimeReactProvider value={{ ripple: true /* 👈 NO pongas unstyled: true */ }}>
+  <PrimeReactProvider value={{ ripple: true  }}>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
@@ -53,7 +54,7 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="*" element={<NotFound />} />
-
+              
               {/* Panel administrador */}
               <Route
                 path="/admin"
@@ -87,6 +88,10 @@ const App = () => (
                   </AdminRoute>
                 }
               />
+              <Route path="/checkout/success" element={<CheckoutSuccess />} />
+              <Route path="/checkout/cancel" element={<CheckoutCancel />} />
+              <Route path="/mis-pedidos" element={<MyOrders />} />
+
             </Routes>
           </BrowserRouter>
         </CartProvider>
