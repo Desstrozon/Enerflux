@@ -1,37 +1,57 @@
-*.log
+# --- SO / editor ---
 .DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
 Thumbs.db
-# Laravel specific
-/public/mix-manifest.json
-/public/js/
-/public/css/
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
 
-# NPM/Yarn logs
+# --- Entornos / secretos ---
+.env
+.env.*
+!/env.example
+auth.json
+
+# --- Logs / caches ---
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# Coverage (tests)
+.phpactor.json
+.phpunit.result.cache
+/.phpunit.cache
 coverage/
+
+# --- Composer / vendor ---
+/vendor
+
+# --- Laravel build & runtime ---
+/public/build
+/public/hot
+/public/storage
+/public/mix-manifest.json
+/public/js/
+/public/css/
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+/storage/*
+!/storage/.gitignore
+/storage/*.key
+/storage/pail
+
+# BD local (usas SQLite)
+database/database.sqlite
+
+# --- Frontend (mantén solo el código fuente) ---
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.turbo/
+frontend/.parcel-cache/
+
+# Asegura que estos se versionan (si existen)
+!public/brand/
+!resources/views/invoices/
+!frontend/public/default.png

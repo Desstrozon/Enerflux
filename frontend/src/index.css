@@ -1,0 +1,345 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    --primary: 220 70% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 220 70% 38%;
+
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 220 15% 15%;
+
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 15 85% 60%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 15 85% 55%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 220 70% 45%;
+
+    --radius: 0.75rem;
+    
+    --gradient-hero: linear-gradient(135deg, hsl(220 70% 45%) 0%, hsl(15 85% 60%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 15% 98%) 100%);
+    
+    --shadow-sm: 0 2px 8px hsl(220 15% 15% / 0.05);
+    --shadow-md: 0 4px 16px hsl(220 15% 15% / 0.08);
+    --shadow-lg: 0 8px 32px hsl(220 15% 15% / 0.12);
+    --shadow-glow: 0 0 40px hsl(220 70% 45% / 0.15);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 25% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 25% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 220 70% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 220 70% 48%;
+
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 220 20% 15%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 15 85% 65%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 15 85% 60%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 220 70% 55%;
+    
+    --gradient-hero: linear-gradient(135deg, hsl(220 70% 25%) 0%, hsl(15 85% 40%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 25% 10%) 0%, hsl(220 25% 12%) 100%);
+    
+    --shadow-sm: 0 2px 8px hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 16px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 8px 32px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 40px hsl(220 70% 55% / 0.3);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+/* CSS LOGIN  */
+@layer base {
+  :root {
+    --background: 240 15% 9%;
+    --foreground: 240 5% 96%;
+
+    --card: 240 12% 12%;
+    --card-foreground: 240 5% 96%;
+
+    --popover: 240 12% 12%;
+    --popover-foreground: 240 5% 96%;
+
+    --primary: 263 70% 60%;
+    --primary-foreground: 240 5% 96%;
+    --primary-glow: 263 70% 70%;
+
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 240 5% 96%;
+    --secondary-glow: 217 91% 70%;
+
+    --muted: 240 8% 20%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 280 80% 65%;
+    --accent-foreground: 240 5% 96%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 240 5% 96%;
+
+    --border: 240 8% 20%;
+    --input: 240 8% 18%;
+    --ring: 263 70% 60%;
+
+    --radius: 0.75rem;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(263 70% 60%), hsl(217 91% 60%));
+    --gradient-card: linear-gradient(135deg, hsl(240 12% 12% / 0.7), hsl(240 12% 15% / 0.5));
+    --gradient-hero: linear-gradient(180deg, hsl(240 15% 9%), hsl(263 70% 15%));
+    
+    --shadow-glow: 0 0 60px hsl(263 70% 60% / 0.3);
+    --shadow-elevated: 0 20px 40px hsl(240 15% 5% / 0.6);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 15% 9%;
+    --foreground: 240 5% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: var(--gradient-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+  
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+}
+
+
+/* Superficies del panel del carrito */
+.cart-panel,
+.cart-panel .p-sidebar-content,
+.cart-panel .cart-header,
+.cart-panel .cart-footer {
+  background-color: hsl(var(--card)) !important; /* usa tu tema */
+}
+
+/* (OPCIONAL) — si quieres el panel SIEMPRE claro, incluso en dark, descomenta:
+.cart-panel,
+.cart-panel .p-sidebar-content,
+.cart-panel .cart-header,
+.cart-panel .cart-footer {
+  background-color: #fff !important;
+  color: hsl(var(--foreground)) !important;
+}
+*/
+
+/* Borde de separación del panel */
+.cart-panel { border-left: 1px solid hsl(var(--border)); }
+
+/* Header y footer sutiles */
+.cart-header, .cart-footer { box-shadow: 0 1px 0 hsl(var(--border) / .8) inset; }
+
+/* --- LIMPIEZA DEL ORDERLIST (quita el “fondo cuadrado”) --- */
+.cart-panel .p-orderlist {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Header del OrderList como una barrita limpia */
+.cart-panel .p-orderlist .p-orderlist-header {
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 12px !important;
+  padding: .75rem 1rem !important;
+  box-shadow: none !important;
+}
+
+/* La lista sin bloque de fondo */
+.cart-panel .p-orderlist .p-orderlist-list {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 1rem 0 .25rem 0 !important;
+}
+
+/* Pulido general (ya lo tenías; lo dejo junto) */
+.p-orderlist .p-orderlist-item.p-highlight { background: transparent !important; color: inherit !important; }
+.no-select, .no-select * { user-select: none; }
+.p-orderlist .p-orderlist-controls { display: none !important; }
+.pretty-orderlist .p-orderlist-list { gap: .5rem; display: grid; }
+.pretty-orderlist .p-orderlist-item { border: none; padding: 0; background: transparent; }
+
+/* PrimeIcons robusto */
+.pi, .p-component .pi, .p-button .pi, .p-inputnumber .pi, .p-orderlist .pi {
+  font-family: "PrimeIcons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  line-height: 1 !important;
+}
+
+
+/* ==== Botones Enerflux ==== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  height: 2.5rem;                 /* 40px */
+  padding: 0 1rem;
+  border-radius: .8rem;
+  font-weight: 600;
+  transition: transform .06s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+/* Sólido principal */
+.btn-primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid hsl(var(--primary));
+}
+.btn-primary:hover { background: hsl(var(--primary-hover)); }
+
+/* Outline neutro */
+.btn-outline {
+  background: transparent;
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+}
+.btn-outline:hover { background: hsl(var(--foreground) / .05); }
+
+/* Icono redondo (para + / − / 🗑) */
+.btn-icon {
+  width: 2rem;                     /* 32px */
+  height: 2rem;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--border));
+  background: transparent;
+  color: hsl(var(--foreground));
+}
+.btn-icon:hover { background: hsl(var(--primary) / .10); color: hsl(var(--primary)); }
+
+/* Icono “peligro” suave para 🗑 */
+.btn-icon-danger:hover { background: hsl(var(--destructive) / .12); color: hsl(var(--destructive)); }
+
+/* Quitar sombra de foco de Prime y usar halo sutil */
+.p-button:focus, .p-button:focus-visible { box-shadow: none !important; outline: none !important; }
+.btn:focus-visible { box-shadow: 0 0 0 3px hsl(var(--primary) / .25); }
+
+

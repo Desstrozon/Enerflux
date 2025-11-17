@@ -15,3 +15,11 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/storage/{path}', function ($path) {
+    $file = storage_path('app/public/' . $path);
+    if (!file_exists($file)) {
+        abort(404);
+    }
+    return response()->file($file);
+})->where('path', '.*');
