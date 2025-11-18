@@ -29,6 +29,12 @@ class Producto extends Model
     {
         return $this->belongsTo(User::class, 'id_vendedor');
     }
+    // app/Models/Producto.php
+    public function productReviews()
+    {
+        // fk = producto_id en product_reviews ; pk = id_producto en productos
+        return $this->hasMany(ProductReview::class, 'producto_id', 'id_producto');
+    }
     protected $casts = [
         'precio_base' => 'float',
         'stock'       => 'int',

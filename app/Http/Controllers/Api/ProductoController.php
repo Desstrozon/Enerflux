@@ -15,26 +15,36 @@ class ProductoController extends Controller
     use AuthorizesRequests;
 
     // GET /api/productos
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $q = trim($request->query('q', ''));
-        $query = Producto::query();
 
-        if ($q !== '') {
-            $query->where(function ($qq) use ($q) {
-                $qq->where('nombre', 'like', "%{$q}%")
-                   ->orWhere('descripcion', 'like', "%{$q}%")
-                   ->orWhere('categoria', 'like', "%{$q}%");
-            });
-        }
+        $productos = Producto::query()
+            ->when($q !== '', function ($query) use ($q) {
+                $like = "%{$q}%";
+                $query->where(function ($w) use ($like) {
+                    $w->where('nombre', 'like', $like)
+                      ->orWhere('categoria', 'like', $like)
+                      ->orWhere('descripcion', 'like', $like);
+                });
+            })
+            // 👇 usa la relación productReviews (NO reviews)
+            ->withCount(['productReviews as reviews_count'])
+            ->withAvg('productReviews as avg_rating', 'rating')
+            ->orderBy('id_producto', 'desc')
+            ->get();
 
-        return response()->json($query->orderBy('id_producto')->get());
+        return response()->json($productos);
     }
 
-    // GET /api/productos/{id}
     public function show($id)
     {
-        return response()->json(Producto::findOrFail($id));
+        $producto = Producto::where('id_producto', $id)
+            ->withCount(['productReviews as reviews_count'])
+            ->withAvg('productReviews as avg_rating', 'rating')
+            ->firstOrFail();
+
+        return response()->json($producto);
     }
 
     // POST /api/productos
@@ -90,9 +100,11 @@ class ProductoController extends Controller
         }
 
         if ($request->hasFile('imagen')) {
-            if ($producto->imagen
+            if (
+                $producto->imagen
                 && $producto->imagen !== 'productos/default.png'
-                && Storage::disk('public')->exists($producto->imagen)) {
+                && Storage::disk('public')->exists($producto->imagen)
+            ) {
                 Storage::disk('public')->delete($producto->imagen);
             }
             $data['imagen'] = $request->file('imagen')->store('productos', 'public');
@@ -112,9 +124,11 @@ class ProductoController extends Controller
             // evitar fallo de FK en SQLite (cart_items → productos)
             CartItem::where('producto_id', $producto->id_producto)->delete();
 
-            if ($producto->imagen
+            if (
+                $producto->imagen
                 && $producto->imagen !== 'productos/default.png'
-                && Storage::disk('public')->exists($producto->imagen)) {
+                && Storage::disk('public')->exists($producto->imagen)
+            ) {
                 Storage::disk('public')->delete($producto->imagen);
             }
 

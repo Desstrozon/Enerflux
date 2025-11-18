@@ -79,7 +79,7 @@ export default function UserProfile() {
   const [pwd, setPwd] = useState({ current_password: "", password: "", password_confirmation: "" });
 
   const isVendedor = useMemo(() => (me?.rol || "").toLowerCase() === "vendedor", [me?.rol]);
-  const isCliente  = useMemo(() => (me?.rol || "").toLowerCase() === "cliente", [me?.rol]);
+  const isCliente = useMemo(() => (me?.rol || "").toLowerCase() === "cliente", [me?.rol]);
 
   /* -------- load /me -------- */
   useEffect(() => {
@@ -232,17 +232,12 @@ export default function UserProfile() {
     );
   }
 
-  /* ======================
-     LAYOUT NUEVO (1 columna)
-     - Header hero
-     - Una tarjeta grande con secciones
-     - Footer interno fijo con acciones
-  ====================== */
+  // 👇 padding-top alto para que no lo tape el navbar fijo, y padding-bottom para la barra sticky
   return (
-    <main className="container mx-auto px-4 py-10">
+    <main className="container mx-auto px-4 pt-24 pb-28">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">Mi perfil</h1>
+        <h1 className="text-3xl font-semibold tracking-tight leading-tight">Mi perfil</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Gestiona tus datos personales, contacto y dirección de envío.
         </p>
@@ -276,7 +271,7 @@ export default function UserProfile() {
                   value={form.name || ""}
                   onChange={(e) => onChange("name", e.target.value)}
                   placeholder="Tu nombre"
-                  className="h-10"
+                  className="min-h-11 leading-[1.25]"
                 />
               </div>
               <div>
@@ -286,7 +281,7 @@ export default function UserProfile() {
                   value={form.email || ""}
                   onChange={(e) => onChange("email", e.target.value)}
                   placeholder="tucorreo@ejemplo.com"
-                  className="h-10"
+                  className="min-h-11 leading-[1.25]"
                 />
               </div>
             </div>
@@ -308,7 +303,7 @@ export default function UserProfile() {
                   value={form.telefono || ""}
                   onChange={(e) => onChange("telefono", e.target.value)}
                   placeholder="Ej. 600 000 000"
-                  className="h-10"
+                  className="min-h-11 leading-[1.25]"
                 />
               </div>
 
@@ -319,7 +314,7 @@ export default function UserProfile() {
                     value={form.zona || ""}
                     onChange={(e) => onChange("zona", e.target.value)}
                     placeholder="Ej. Almería y Granada"
-                    className="h-10"
+                    className="min-h-11 leading-[1.25]"
                   />
                 </div>
               )}
@@ -343,28 +338,28 @@ export default function UserProfile() {
                       value={form.direccion || ""}
                       onChange={(e) => onChange("direccion", e.target.value)}
                       placeholder="C/ Renovable, 123 · 04001 Almería"
-                      className="h-10"
+                      className="min-h-11 leading-[1.25]"
                     />
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="sm:col-span-2">
-                      <Label className="text-xs">Línea 1</Label>
+                      <Label className="text-xs">Linea 1</Label>
                       <Input
                         value={form.line1 || ""}
                         onChange={(e) => onChange("line1", e.target.value)}
                         placeholder="C/ Renovable, 123"
-                        className="h-10"
+                        className="min-h-11 leading-[1.25]"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <Label className="text-xs">Línea 2 (opcional)</Label>
+                      <Label className="text-xs">Linea 2</Label>
                       <Input
                         value={form.line2 || ""}
                         onChange={(e) => onChange("line2", e.target.value)}
                         placeholder="Piso, puerta, escalera…"
-                        className="h-10"
+                        className="min-h-11 leading-[1.25]"
                       />
                     </div>
 
@@ -374,7 +369,7 @@ export default function UserProfile() {
                         value={form.city || ""}
                         onChange={(e) => onChange("city", e.target.value)}
                         placeholder="Almería"
-                        className="h-10"
+                        className="min-h-11 leading-[1.25]"
                       />
                     </div>
 
@@ -384,7 +379,7 @@ export default function UserProfile() {
                         value={form.region || ""}
                         onChange={(e) => onChange("region", e.target.value)}
                         placeholder="Almería"
-                        className="h-10"
+                        className="min-h-11 leading-[1.25]"
                       />
                     </div>
 
@@ -394,7 +389,7 @@ export default function UserProfile() {
                         value={form.postal_code || ""}
                         onChange={(e) => onChange("postal_code", e.target.value)}
                         placeholder="04001"
-                        className="h-10"
+                        className="min-h-11 leading-[1.25]"
                       />
                     </div>
 
@@ -404,7 +399,7 @@ export default function UserProfile() {
                         value={form.country || "ES"}
                         onValueChange={(v) => onChange("country", v)}
                       >
-                        <SelectTrigger className="h-10">
+                        <SelectTrigger className="min-h-11">
                           <SelectValue placeholder="Selecciona un país" />
                         </SelectTrigger>
                         <SelectContent className="max-h-72">
@@ -423,7 +418,7 @@ export default function UserProfile() {
           )}
 
           {/* FOOTER acciones fijo dentro de la tarjeta */}
-          <div className="sticky bottom-0 -mx-6 mt-8 border-t bg-card/80 px-6 py-4 backdrop-blur">
+          <div className="sticky bottom-0 -mx-6 mt-8 border-t bg-card/80 px-6 py-4 backdrop-blur z-10">
             <div className="flex items-center justify-end gap-2">
               <Button variant="outline" onClick={onCancel} className="h-9">
                 <Undo2 className="w-4 h-4 mr-2" />

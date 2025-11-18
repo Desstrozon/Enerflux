@@ -14,7 +14,6 @@ const Navbar = () => {
   const [authUser, setAuthUser] = useState<UserMini | null>(null);
   const { totalItems } = useCart();
   const itemCount = totalItems;
-
   const [showCart, setShowCart] = useState(false);
 
   const refreshAuth = () => {
@@ -41,6 +40,20 @@ const Navbar = () => {
 
   const isLoggedIn = !!authUser;
 
+  // 👇 Navega a "/" si hace falta y luego hace scroll suave a la sección
+  const goToSection = (id: string) => {
+    const scroll = () => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+      // el scroll se hará en Index (ver paso 2)
+    } else {
+      scroll();
+    }
+  };
+
   const logout = async () => {
     const ok = await confirm("Cerrar sesión", "¿Seguro que quieres salir?", "Sí, salir");
     if (!ok) return;
@@ -54,21 +67,18 @@ const Navbar = () => {
           Accept: "application/json",
         },
       });
-    } catch {
-      // silencioso
-    }
+    } catch { }
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     window.dispatchEvent(new Event("auth:changed"));
-
     await alertSuccess("Sesión cerrada");
     navigate("/");
   };
 
   const active = (path: string) =>
     location.pathname === path ||
-    (path === "/admin" && location.pathname.startsWith("/admin"))
+      (path === "/admin" && location.pathname.startsWith("/admin"))
       ? "text-primary font-medium"
       : "text-foreground";
 
@@ -80,7 +90,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* 🧭 NAVBAR */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Izquierda */}
@@ -107,25 +116,20 @@ const Navbar = () => {
 
           {/* Centro */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#inicio" className="text-foreground hover:text-primary transition-colors">
+            <button onClick={() => navigate("/?scroll=inicio")} className="text-foreground hover:text-primary transition-colors">
               Inicio
-            </a>
-            <a href="#productos" className="text-foreground hover:text-primary transition-colors">
+            </button>
+            <button onClick={() => navigate("/?scroll=productos")} className="text-foreground hover:text-primary transition-colors">
               Productos
-            </a>
-            <a href="#proveedores" className="text-foreground hover:text-primary transition-colors">
-              Proveedores
-            </a>
-            <a href="#contacto" className="text-foreground hover:text-primary transition-colors">
+            </button>
+            <button onClick={() => navigate("/?scroll=contacto")} className="text-foreground hover:text-primary transition-colors">
               Contacto
-            </a>
+            </button>
 
             {isLoggedIn && (
-              <>
-                <NavLink to="/mis-pedidos" className="text-foreground hover:text-primary transition-colors">
-                  Mis pedidos
-                </NavLink>               
-              </>
+              <NavLink to="/mis-pedidos" className="text-foreground hover:text-primary transition-colors">
+                Mis pedidos
+              </NavLink>
             )}
 
             {isAdmin && (
@@ -140,7 +144,6 @@ const Navbar = () => {
 
           {/* Derecha */}
           <div className="flex items-center gap-4">
-            {/* 🛒 Carrito */}
             <div className="relative cursor-pointer" onClick={() => setShowCart(true)}>
               <i className="pi pi-shopping-cart text-xl text-foreground hover:text-primary transition"></i>
               {itemCount > 0 && (
@@ -150,19 +153,15 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* 👤 Sesión */}
             {authUser ? (
               <>
                 <span className="hidden sm:inline text-sm text-muted-foreground">
                   {authUser.name} · {authUser.rol}
                 </span>
-
-                {/* 👤 Nuevo botón Perfil a la derecha */}
                 <Button variant="outline" size="sm" onClick={() => navigate("/profile")}>
                   <User className="h-4 w-4 mr-2" />
                   Perfil
                 </Button>
-
                 <Button variant="outline" size="sm" onClick={logout}>
                   Cerrar sesión
                 </Button>
@@ -173,12 +172,7 @@ const Navbar = () => {
                   <User className="h-4 w-4 mr-2" />
                   Ingresar
                 </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  className="hidden sm:inline-flex"
-                  onClick={() => navigate("/register")}
-                >
+                <Button variant="default" size="sm" className="hidden sm:inline-flex" onClick={() => navigate("/register")}>
                   Registrarse
                 </Button>
               </>
@@ -187,7 +181,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* 🧺 Sidebar del carrito */}
       <CartSidebar visible={showCart} onHide={() => setShowCart(false)} />
     </>
   );

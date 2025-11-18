@@ -83,7 +83,7 @@ class User extends Authenticatable
         return in_array(strtolower($this->rol ?? ''), ['admin', 'administrador'], true);
     }
 
-    
+
     public function cart()
     {
         // si solo quieres 1 activo:
@@ -92,5 +92,8 @@ class User extends Authenticatable
     // si quieres poder acceder a históricos:
     // public function carts() { return $this->hasMany(Cart::class); }
 
-
+    public function productReviews()
+    {
+        return $this->hasMany(ProductReview::class, 'user_id');
+    }
 }

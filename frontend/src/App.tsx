@@ -1,14 +1,18 @@
+// src/App.tsx
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import SiteLayout from "@/layouts/SiteLayout";
+
 // Páginas públicas
 import Index from "@/pages/Index";
 import NotFound from "@/pages/NotFound";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import ProductDetail from "@/pages/ProductDetail";
 
 // Páginas auth del cliente
 import CheckoutSuccess from "@/pages/CheckoutSuccess";
@@ -19,7 +23,7 @@ import Profile from "@/pages/Profile";
 // Admin
 import AdminRoute from "@/routes/AdminRoute";
 import AdminIndex from "@/pages/admin/Index";
-import UsersAdmin from "@/pages/admin/Users"; // <- ÚNICO componente para lista y edición
+import UsersAdmin from "@/pages/admin/Users";
 import VendedoresAdmin from "@/pages/admin/Vendedores";
 import ProductosAdmin from "@/pages/admin/Productos";
 
@@ -45,60 +49,63 @@ const App = () => (
         <CartProvider>
           <BrowserRouter>
             <Routes>
-              {/* Públicas */}
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="*" element={<NotFound />} />
+              {/* Todo lo de aquí dentro tendrá Navbar (SiteLayout) */}
+              <Route element={<SiteLayout />}>
+                {/* Públicas */}
+                <Route path="/" element={<Index />} />
+                <Route path="/producto/:id" element={<ProductDetail />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="*" element={<NotFound />} />
 
-              {/* Cliente autenticado */}
-              <Route path="/checkout/success" element={<CheckoutSuccess />} />
-              <Route path="/checkout/cancel" element={<CheckoutCancel />} />
-              <Route path="/mis-pedidos" element={<MyOrders />} />
-              <Route path="/profile" element={<Profile />} />
+                {/* Cliente autenticado */}
+                <Route path="/checkout/success" element={<CheckoutSuccess />} />
+                <Route path="/checkout/cancel" element={<CheckoutCancel />} />
+                <Route path="/mis-pedidos" element={<MyOrders />} />
+                <Route path="/profile" element={<Profile />} />
 
-              {/* Panel administrador */}
-              <Route
-                path="/admin"
-                element={
-                  <AdminRoute>
-                    <AdminIndex />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/admin/usuarios"
-                element={
-                  <AdminRoute>
-                    <UsersAdmin />
-                  </AdminRoute>
-                }
-              />
-              {/* Usa el mismo componente para edición por :id */}
-              <Route
-                path="/admin/usuarios/:id"
-                element={
-                  <AdminRoute>
-                    <UsersAdmin />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/admin/vendedores"
-                element={
-                  <AdminRoute>
-                    <VendedoresAdmin />
-                  </AdminRoute>
-                }
-              />
-              <Route
-                path="/admin/productos"
-                element={
-                  <AdminRoute>
-                    <ProductosAdmin />
-                  </AdminRoute>
-                }
-              />
+                {/* Panel administrador (con el mismo layout/ Navbar) */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <AdminIndex />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/usuarios"
+                  element={
+                    <AdminRoute>
+                      <UsersAdmin />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/usuarios/:id"
+                  element={
+                    <AdminRoute>
+                      <UsersAdmin />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/vendedores"
+                  element={
+                    <AdminRoute>
+                      <VendedoresAdmin />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/productos"
+                  element={
+                    <AdminRoute>
+                      <ProductosAdmin />
+                    </AdminRoute>
+                  }
+                />
+              </Route>
             </Routes>
           </BrowserRouter>
         </CartProvider>

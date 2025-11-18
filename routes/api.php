@@ -10,7 +10,8 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\StripeController;
-use App\Http\Controllers\Api\UserController; // 👈 añadido
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ use App\Http\Controllers\Api\UserController; // 👈 añadido
 |  AUTENTICACIÓN (público)
 |  - Login / Logout / Registro
 ========================================================= */
+
 Route::post('/login',    [AuthController::class, 'login']);
 Route::post('/logout',   [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/register', [RegisterController::class, 'store']);
@@ -33,6 +35,9 @@ Route::post('/register', [RegisterController::class, 'store']);
 ========================================================= */
 Route::get('/productos',      [ProductoController::class, 'index']); // listar (público)
 Route::get('/productos/{id}', [ProductoController::class, 'show'])->whereNumber('id'); // detalle (público)
+
+/* === Reseñas de producto (público) === */
+Route::get('/productos/{id}/reviews', [ReviewController::class, 'index'])->whereNumber('id');
 
 /* =========================================================
 |  ZONA AUTENTICADA (cliente logueado)
@@ -67,17 +72,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cart/remove',  [CartController::class, 'remove']);
     Route::post('/cart/clear',   [CartController::class, 'clear']);
     Route::post('/cart/sync',    [CartController::class, 'sync']);
+
     // ----- notificaciones -----
-     Route::get('/notifications', function (\Illuminate\Http\Request $r) {
+    Route::get('/notifications', function (Request $r) {
         return $r->user()->notifications()->latest()->limit(50)->get();
     });
-
-    Route::post('/notifications/{id}/read', function (\Illuminate\Http\Request $r, string $id) {
+    Route::post('/notifications/{id}/read', function (Request $r, string $id) {
         $n = $r->user()->notifications()->where('id', $id)->firstOrFail();
         $n->markAsRead();
         return ['ok' => true];
     });
 
+    // ---- Reseñas (auth) ----
+    Route::post('/productos/{id}/reviews', [ReviewController::class, 'storeOrUpdate'])->whereNumber('id'); // crear/editar reseña propia
+    Route::post('/reviews/{id}/react',     [ReviewController::class, 'react'])->whereNumber('id');  // like/dislike
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->whereNumber('review');
     // ---- Checkout (Stripe) ----
     Route::post('/checkout/sessions', [StripeController::class, 'createCheckoutSession']);
 
