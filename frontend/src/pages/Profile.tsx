@@ -344,7 +344,7 @@ export default function UserProfile() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="sm:col-span-2">
-                      <Label className="text-xs">Línea 1</Label>
+                      <Label className="text-xs">Linea 1</Label>
                       <Input
                         value={form.line1 || ""}
                         onChange={(e) => onChange("line1", e.target.value)}
@@ -354,7 +354,7 @@ export default function UserProfile() {
                     </div>
 
                     <div className="sm:col-span-2">
-                      <Label className="text-xs">Línea 2 (opcional)</Label>
+                      <Label className="text-xs">Linea 2</Label>
                       <Input
                         value={form.line2 || ""}
                         onChange={(e) => onChange("line2", e.target.value)}
