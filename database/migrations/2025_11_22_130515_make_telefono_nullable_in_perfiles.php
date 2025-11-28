@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('telefono', 30)->nullable()->change();
         });
 
-        // vendedor (si tienes esta tabla)
+        // vendedor 
         Schema::table('perfil_vendedor', function (Blueprint $table) {
             $table->string('telefono', 30)->nullable()->change();
         });
@@ -21,7 +21,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        // Si quisieras volver atrás (no hace falta en tu TFG, pero por dejarlo correcto):
+       
         Schema::table('perfil_cliente', function (Blueprint $table) {
             $table->string('telefono', 30)->nullable(false)->change();
         });
