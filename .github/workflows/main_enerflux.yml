@@ -1,5 +1,4 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy Laravel + Vite to Azure Web App - Enerflux
 
@@ -42,21 +41,20 @@ jobs:
 
       - name: Build frontend
         working-directory: ./frontend
+        run: npm run build
         env:
           VITE_API_BASE_URL: "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/api"
-        run: npm run build
 
-      - name: Copy frontend build to Laravel public/frontend
+      - name: Copy frontend build to Laravel public/
         run: |
-          rm -rf public/frontend
-          mkdir -p public/frontend
-          cp -r frontend/dist/* public/frontend/
+          # Limpia los assets antiguos
+          rm -rf public/assets public/*.png public/*.svg public/*.ico public/*.webp public/*.js public/*.css
+
+          # Copia TODO el build al public root
+          cp -r frontend/dist/* public/
+
+          # Limpia node_modules y dist del runner
           rm -rf frontend/node_modules frontend/dist
-
-      # OPCIONAL: evitar que llegue el index.html de desarrollo al zip
-      - name: Remove dev frontend index.html from artifact
-        run: |
-          if [ -f frontend/index.html ]; then rm frontend/index.html; fi
 
       # ---------- DEPLOY A AZURE ----------
       - name: Login to Azure
