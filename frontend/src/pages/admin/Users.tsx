@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { apiGet, apiPutJson, apiPostJson, API_BASE } from "@/lib/http";
+import { apiGet, apiPutJson, apiPostJson, apiDelete } from "@/lib/http";
 
 
 import {
@@ -242,7 +242,7 @@ export default function UsersAdmin() {
     }
   };
 
- const handleDelete = async (u: UserRow) => {
+  const handleDelete = async (u: UserRow) => {
   const ok = await confirm(
     "Eliminar usuario",
     `¿Seguro que quieres eliminar a “${u.name}”? Esta acción no se puede deshacer.`,
@@ -252,21 +252,7 @@ export default function UsersAdmin() {
 
   try {
     setDeletingId(u.id);
-
-    const token = localStorage.getItem("token") || "";
-    const res = await fetch(`${API_BASE}/users/${u.id}`, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    });
-
-    if (!res.ok) {
-      const txt = await res.text().catch(() => "");
-      throw new Error(txt || `No se pudo eliminar (HTTP ${res.status}).`);
-    }
-
+    await apiDelete(`/users/${u.id}`);
     await alertSuccess("Usuario eliminado.");
     await load();
   } catch (e: any) {
@@ -276,6 +262,8 @@ export default function UsersAdmin() {
     setDeletingId(null);
   }
 };
+
+
 
 
   // ==========================

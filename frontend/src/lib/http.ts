@@ -1,17 +1,23 @@
-// ============================================================================
-// RESOLVER API_BASE
-// ============================================================================
+// src/lib/http.ts
 
+// ==== BASE URL ====
+// 1º usa VITE_API_BASE_URL (la que tienes en Azure con /api)
+// 2º si no existe, en prod: window.location.origin + "/api"
+// 3º en dev: 127.0.0.1:8000/api
 export const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
   (import.meta.env.MODE === "production"
     ? `${window.location.origin}/api`
     : "http://127.0.0.1:8000/api");
 
-// ============================================================================
-// PARSEAR RESPUESTAS JSON
-// ============================================================================
+// Normaliza URL: admite paths con o sin barra inicial
+function buildUrl(path: string) {
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (!path.startsWith("/")) path = `/${path}`;
+  return `${API_BASE}${path}`;
+}
 
+// Manejo común de respuestas JSON
 async function handleJson(res: Response) {
   const text = await res.text();
   let data: any = null;
@@ -19,19 +25,15 @@ async function handleJson(res: Response) {
   try {
     data = text ? JSON.parse(text) : null;
   } catch {
-    // No es JSON → ignoramos
+    // no es JSON, lo dejamos en null
   }
 
   if (!res.ok) {
-    // Mensaje legible
     let msg = data?.message || `Error ${res.status}`;
 
-    // Errores de validación
     if (data?.errors) {
       try {
-        const flat = Object.values(data.errors)
-          .flat()
-          .join(" ");
+        const flat = Object.values(data.errors).flat().join(" ");
         if (flat) msg = flat;
       } catch {}
     }
@@ -45,69 +47,70 @@ async function handleJson(res: Response) {
   return data;
 }
 
-// ============================================================================
-// FUNCIÓN GENÉRICA PARA TODAS LAS PETICIONES
-// ============================================================================
+// ========= HELPERS =========
 
-async function request<T>(
-  method: string,
-  path: string,
-  body?: any,
-  isFormData = false
-): Promise<T> {
-  const url = path.startsWith("http") ? path : `${API_BASE}${path}`;
+// GET (con Bearer si existe)
+export async function apiGet<T = any>(path: string): Promise<T> {
   const token = localStorage.getItem("token") || "";
-
-  const headers: Record<string, string> = {
-    Accept: "application/json",
-  };
-
-  if (!isFormData) headers["Content-Type"] = "application/json";
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-
-  const res = await fetch(url, {
-    method,
-    headers,
-    body: isFormData ? body : body ? JSON.stringify(body) : undefined,
-    credentials: "omit", // Siempre sin cookies
+  const res = await fetch(buildUrl(path), {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    credentials: "omit",
   });
-
   return handleJson(res);
 }
 
-// ============================================================================
-// HELPERS PÚBLICOS (EXPORTADOS CORRECTAMENTE)
-// ============================================================================
-
-// GET
-export const apiGet = <T = any>(path: string) =>
-  request<T>("GET", path);
-
 // POST JSON
-export const apiPostJson = <T = any>(path: string, body: any) =>
-  request<T>("POST", path, body);
+export async function apiPostJson<T = any>(
+  path: string,
+  body: any
+): Promise<T> {
+  const token = localStorage.getItem("token") || "";
+  const res = await fetch(buildUrl(path), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(body),
+    credentials: "omit",
+  });
+  return handleJson(res);
+}
 
-// POST FormData
-export const apiPostForm = <T = any>(path: string, form: FormData) =>
-  request<T>("POST", path, form, true);
-
-// PUT
-export const apiPutJson = <T = any>(path: string, body: any) =>
-  request<T>("PUT", path, body);
-
-// PATCH
-export const apiPatchJson = <T = any>(path: string, body: any) =>
-  request<T>("PATCH", path, body);
+// PUT JSON
+export async function apiPutJson<T = any>(
+  path: string,
+  body: any
+): Promise<T> {
+  const token = localStorage.getItem("token") || "";
+  const res = await fetch(buildUrl(path), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(body),
+    credentials: "omit",
+  });
+  return handleJson(res);
+}
 
 // DELETE
-export const apiDeleteJson = <T = any>(path: string) =>
-  request<T>("DELETE", path);
-
-// Para compatibilidad antigua (si algo usa API.post/put/etc)
-export const API = {
-  url: API_BASE,
-  get: apiGet,
-  post: apiPostJson,
-  put: apiPutJson,
-  delete: apiDeleteJson,
-};
+export async function apiDelete<T = any>(path: string): Promise<T> {
+  const token = localStorage.getItem("token") || "";
+  const res = await fetch(buildUrl(path), {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    credentials: "omit",
+  });
+  return handleJson(res);
+}
