@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FileDown, Eye } from "lucide-react";
 
-import { apiGet, API_BASE } from "@/lib/http";   //  añadimos API_BASE
+import { apiGet, API_BASE } from "@/lib/http";   //
 import { Button } from "@/components/ui/button";
 import BackButton from "@/components/BackButton";
 import { Card, CardContent } from "@/components/ui/card";
