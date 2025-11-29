@@ -17,6 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import CartSidebar from "@/components/CartSidebar";
 import { confirm, alertSuccess } from "@/lib/alerts";
+import { apiPostJson } from "@/lib/http";   
 
 type UserMini = { name?: string; rol?: string };
 
@@ -56,16 +57,12 @@ const Navbar = () => {
     const ok = await confirm("Cerrar sesión", "¿Seguro que quieres salir?", "Sí, salir");
     if (!ok) return;
 
-    const token = localStorage.getItem("token");
     try {
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/logout`, {
-        method: "POST",
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          Accept: "application/json",
-        },
-      });
-    } catch {}
+      // usa el helper centralizado, que ya monta la URL y el token
+      await apiPostJson("/logout", {});
+    } catch {
+      // si peta, igualmente limpiamos sesión en el cliente
+    }
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -74,6 +71,9 @@ const Navbar = () => {
     navigate("/");
     setMobileOpen(false);
   };
+
+  // ... resto del componente igual
+
 
   const active = (path: string) =>
     location.pathname === path ||

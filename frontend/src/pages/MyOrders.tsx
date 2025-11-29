@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FileDown, Eye } from "lucide-react";
 
-import { apiGet } from "@/lib/http";
+import { apiGet, API_BASE } from "@/lib/http";   //  añadimos API_BASE
 import { Button } from "@/components/ui/button";
 import BackButton from "@/components/BackButton";
 import { Card, CardContent } from "@/components/ui/card";
@@ -31,8 +31,6 @@ const money = (val: any, currency = "EUR") =>
     Number.isFinite(Number(val)) ? Number(val) : 0
   );
 
-const BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
-
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +56,10 @@ export default function OrdersPage() {
   async function handleDownloadPdf(orderId: number) {
     try {
       setDownloadingId(orderId);
-      const url = `${BASE}/orders/${orderId}/invoice.pdf`;
+
+      // 👇 usamos API_BASE en vez de montar BASE a mano
+      const url = `${API_BASE}/orders/${orderId}/invoice.pdf`;
+
       const res = await fetch(url, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
@@ -186,9 +187,9 @@ export default function OrdersPage() {
                     <td className="p-3 align-middle">
                       {o.created_at
                         ? new Date(o.created_at).toLocaleString("es-ES", {
-                          dateStyle: "short",
-                          timeStyle: "short",
-                        })
+                            dateStyle: "short",
+                            timeStyle: "short",
+                          })
                         : "—"}
                     </td>
                     <td className="p-3 align-middle">
@@ -233,8 +234,7 @@ export default function OrdersPage() {
             </table>
           </div>
         </div>
-      )
-      }
+      )}
     </main>
   );
 }

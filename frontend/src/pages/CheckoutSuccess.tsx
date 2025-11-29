@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { apiGet } from "@/lib/http";
+import { API_BASE } from "@/lib/http"; // 👈 usamos la base centralizada
 
 type Order = {
   id: number;
@@ -16,32 +16,41 @@ export default function CheckoutSuccess() {
   const navigate = useNavigate();
   const sessionId = new URLSearchParams(search).get("session_id") || "";
 
-  const [phase, setPhase] = useState<"fetching" | "processing" | "ready" | "error">("fetching");
+  const [phase, setPhase] =
+    useState<"fetching" | "processing" | "ready" | "error">("fetching");
   const [order, setOrder] = useState<Order | null>(null);
 
-  //  Nuevo: HTML de la factura para previsualización segura (vía fetch con Authorization)
+  // HTML de la factura para previsualización
   const [invoiceHtml, setInvoiceHtml] = useState<string>("");
 
   useEffect(() => {
-    if (!sessionId) { setPhase("error"); return; }
+    if (!sessionId) {
+      setPhase("error");
+      return;
+    }
 
     let cancelled = false;
     let tries = 0;
 
     const fetchOrder = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/by-session/${sessionId}`, {
-          headers: {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token") || ""}`,
-          },
-        });
+        const token = localStorage.getItem("token") || "";
+
+        const res = await fetch(
+          `${API_BASE}/orders/by-session/${sessionId}`,
+          {
+            headers: {
+              Accept: "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          }
+        );
 
         // 202 => aún procesando
         if (res.status === 202) {
           if (!cancelled) {
             setPhase("processing");
-            if (tries < 10) {  // ~15s de reintentos
+            if (tries < 10) {
               tries++;
               setTimeout(fetchOrder, 1500);
             } else {
@@ -53,7 +62,7 @@ export default function CheckoutSuccess() {
 
         if (!res.ok) throw new Error(await res.text());
 
-        const data = await res.json() as Order;
+        const data = (await res.json()) as Order;
         if (!cancelled) {
           setOrder(data);
           setPhase("ready");
@@ -64,44 +73,59 @@ export default function CheckoutSuccess() {
     };
 
     fetchOrder();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [sessionId]);
 
   useEffect(() => {
     const loadInvoiceHtml = async () => {
       if (!order?.id) return;
       try {
+        const token = localStorage.getItem("token") || "";
         const res = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/orders/${order.id}/invoice`, //  añade embed=1
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` } }
+          `${API_BASE}/orders/${order.id}/invoice`,
+          {
+            headers: {
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          }
         );
         if (!res.ok) return;
         const html = await res.text();
         setInvoiceHtml(html);
-      } catch { }
+      } catch {
+        // ignoramos error silenciosamente
+      }
     };
     loadInvoiceHtml();
   }, [order?.id]);
 
-  // Descargar PDF (si no tienes endpoint .pdf, hará fallback a print())
+  // Descargar PDF
   const handleDownloadPdf = async () => {
     if (!order?.id) return;
-    const url = `${import.meta.env.VITE_API_BASE_URL}/orders/${order.id}/invoice.pdf`;
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` },
-    });
-    if (!res.ok) return; // puedes mostrar toast si quieres
+    const token = localStorage.getItem("token") || "";
+
+    const res = await fetch(
+      `${API_BASE}/orders/${order.id}/invoice.pdf`,
+      {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+    if (!res.ok) return;
 
     const blob = await res.blob();
     const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
+    a.href = url;
     a.download = `Factura-${order.id}.pdf`;
     document.body.appendChild(a);
     a.click();
     a.remove();
-    URL.revokeObjectURL(a.href);
+    URL.revokeObjectURL(url);
   };
-
 
   const formattedTotal = (() => {
     const raw = (order?.amount ?? order?.total ?? 0) as any;
@@ -141,7 +165,6 @@ export default function CheckoutSuccess() {
             ¡Gracias! Tu pedido #{order?.id} está confirmado.
           </p>
 
-          {/* Fondo sólido para evitar “transparente” */}
           <div className="rounded-xl border p-4 mb-6 bg-white text-black dark:bg-neutral-900 dark:text-neutral-100">
             <div className="flex justify-between">
               <span>Estado</span>
@@ -163,7 +186,10 @@ export default function CheckoutSuccess() {
           </div>
 
           {invoiceHtml && (
-            <div className="rounded-xl border overflow-hidden bg-white" style={{ height: "70vh" }}>
+            <div
+              className="rounded-xl border overflow-hidden bg-white"
+              style={{ height: "70vh" }}
+            >
               <iframe
                 title="Factura"
                 srcDoc={invoiceHtml}

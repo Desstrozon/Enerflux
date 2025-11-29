@@ -1,114 +1,52 @@
 // src/lib/http.ts
-const API =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
-  "http://127.0.0.1:8000/api";
-export { API };
 
-export function authHeaders() {
-  const token = localStorage.getItem("token");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
+const API_BASE =
+  import.meta.env.MODE === "production"
+    ? import.meta.env.VITE_API_BASE_URL
+    : "http://127.0.0.1:8000/api";
 
-/**  Extrae un mensaje legible del body de error (JSON o texto) */
-export async function readErrorBody(res: Response): Promise<string> {
+async function handleJson(res: Response) {
+  const text = await res.text();
+  let data: any = null;
   try {
-    const ct = res.headers.get("content-type") || "";
-    if (ct.includes("application/json")) {
-      const j: any = await res.json().catch(() => null);
-      if (j && typeof j === "object") {
-        return (
-          j.message ||
-          j.error ||
-          (Array.isArray(j.errors) && j.errors[0]) ||
-          JSON.stringify(j)
-        );
-      }
-    }
-    const t = await res.text().catch(() => "");
-    return t || `${res.status} ${res.statusText}`;
-  } catch {
-    return `${res.status} ${res.statusText}`;
-  }
-}
+    data = text ? JSON.parse(text) : null;
+  } catch {}
 
-/**  Lanza Error con mensaje limpio si la respuesta no es OK */
-async function ensureOk(res: Response) {
   if (!res.ok) {
-    throw new Error(await readErrorBody(res));
+    const err: any = new Error(data?.message || "Error en la petición");
+    err.status = res.status;
+    err.details = data;
+    err.errors = data?.errors;
+    throw err;
   }
-  return res;
+
+  return data;
 }
 
-/** GET (JSON) */
-export async function apiGet<T>(url: string): Promise<T> {
-  const res = await fetch(`${API}${url}`, {
-    headers: {
-      Accept: "application/json",
-      ...authHeaders(),
-    },
-    credentials: "omit",
-  });
-  await ensureOk(res);
-  return res.json();
-}
-
-/** POST JSON */
-export async function apiPostJson<T>(url: string, body?: any): Promise<T> {
-  const res = await fetch(`${API}${url}`, {
+export async function apiPostJson<T = any>(path: string, body: any): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      ...authHeaders(),
     },
-    body: body ? JSON.stringify(body) : undefined,
-    credentials: "omit",
+    body: JSON.stringify(body),
+    credentials: "include",
   });
-  await ensureOk(res);
-  return res.json();
+  return handleJson(res);
 }
 
-/** POST FormData (multipart) */
-export async function apiPostForm<T>(url: string, formData: FormData): Promise<T> {
-  const res = await fetch(`${API}${url}`, {
-    method: "POST",
+export async function apiGet<T = any>(path: string): Promise<T> {
+  const token = localStorage.getItem("token") || "";
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "GET",
     headers: {
       Accept: "application/json",
-      ...authHeaders(),
-      //  NO pongas Content-Type con FormData (el navegador añade el boundary)
+      Authorization: token ? `Bearer ${token}` : "",
     },
-    body: formData,
-    credentials: "omit",
+    credentials: "include",
   });
-  await ensureOk(res);
-  return res.json();
+  return handleJson(res);
 }
 
-/** PUT JSON */
-export async function apiPutJson<T>(url: string, body?: any): Promise<T> {
-  const res = await fetch(`${API}${url}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...authHeaders(),
-    },
-    body: body ? JSON.stringify(body) : undefined,
-    credentials: "omit",
-  });
-  await ensureOk(res);
-  return res.json();
-}
-
-/** DELETE */
-export async function apiDelete(url: string): Promise<void> {
-  const res = await fetch(`${API}${url}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      ...authHeaders(),
-    },
-    credentials: "omit",
-  });
-  await ensureOk(res);
-}
+export { API_BASE };
