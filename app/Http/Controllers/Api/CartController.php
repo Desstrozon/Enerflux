@@ -77,7 +77,7 @@ class CartController extends Controller
     public function updateQty(Request $req)
     {
         $data = $req->validate([
-            'producto_id' => ['required', 'integer', 'exists:productos,id_producto'], // 👈
+            'producto_id' => ['required', 'integer', 'exists:productos,id_producto'], // 
             'quantity'    => ['required', 'integer', 'min:0'],
         ]);
 
@@ -85,7 +85,7 @@ class CartController extends Controller
             $cart = $this->getOrCreateCart($req->user());
 
             $item = CartItem::where('cart_id', $cart->id)
-                ->where('producto_id', $data['producto_id']) // 👈 mismo valor que id_producto
+                ->where('producto_id', $data['producto_id']) //  mismo valor que id_producto
                 ->first();
 
             if (!$item) return $this->show($req);
@@ -107,14 +107,14 @@ class CartController extends Controller
     public function remove(Request $req)
     {
         $data = $req->validate([
-            'producto_id' => ['required', 'integer', 'exists:productos,id_producto'], // 👈
+            'producto_id' => ['required', 'integer', 'exists:productos,id_producto'], 
         ]);
 
         return DB::transaction(function () use ($req, $data) {
             $cart = $this->getOrCreateCart($req->user());
 
             CartItem::where('cart_id', $cart->id)
-                ->where('producto_id', $data['producto_id']) // 👈
+                ->where('producto_id', $data['producto_id']) 
                 ->delete();
 
             $cart->load('items');
@@ -140,7 +140,7 @@ class CartController extends Controller
     {
         $payload = $req->validate([
             'items'                 => ['array'],
-            'items.*.producto_id'   => ['required', 'integer', 'exists:productos,id_producto'], // 👈
+            'items.*.producto_id'   => ['required', 'integer', 'exists:productos,id_producto'], 
             'items.*.cantidad'      => ['required', 'integer', 'min:1'],
         ]);
 
@@ -151,7 +151,7 @@ class CartController extends Controller
             $current = $cart->items()->get()->keyBy('producto_id');
 
             foreach ($payload['items'] ?? [] as $it) {
-                $prod = Producto::where('id_producto', $it['producto_id'])->firstOrFail(); // 👈
+                $prod = Producto::where('id_producto', $it['producto_id'])->firstOrFail(); 
                 $existing = $current->get($prod->id_producto);
 
                 if ($existing) {
@@ -159,7 +159,7 @@ class CartController extends Controller
                     $existing->save();
                 } else {
                     $cart->items()->create([
-                        'producto_id'    => $prod->id_producto,   // 👈 guarda id_producto
+                        'producto_id'    => $prod->id_producto,   //  guarda id_producto
                         'quantity'       => (int) $it['cantidad'],
                         'unit_price'     => $prod->precio_base,
                         'name_snapshot'  => $prod->nombre,

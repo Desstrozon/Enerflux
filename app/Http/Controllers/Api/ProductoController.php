@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-// 👇 AÑADIR ESTOS IMPORTS
+//  AÑADIR ESTOS IMPORTS
 use App\Models\Panel;
 use App\Models\Bateria;
 
@@ -41,14 +41,14 @@ class ProductoController extends Controller
     //         ->when($q !== '', function ($query) use ($q) {
     //             $like = "%{$q}%";
     //             $query->where(function ($w) use ($like) {
-    //                 $w->where('productos.nombre', 'like', $like)                        // 👈 prefijo tabla
+    //                 $w->where('productos.nombre', 'like', $like)                        //  prefijo tabla
     //                     ->orWhere('productos.categoria', 'like', $like)
     //                     ->orWhere('productos.descripcion', 'like', $like);
     //             });
     //         })
     //         ->withCount(['productReviews as reviews_count'])
     //         ->withAvg('productReviews as avg_rating', 'rating')
-    //         ->select('productos.*', DB::raw('v.name as vendedor_nombre'))               // 👈 campo extra
+    //         ->select('productos.*', DB::raw('v.name as vendedor_nombre'))               //  campo extra
     //         ->orderBy('productos.id_producto', 'desc')
     //         ->get();
 
@@ -122,7 +122,7 @@ class ProductoController extends Controller
             'id_vendedor'  => 'nullable|integer|exists:users,id',
             'imagen'       => 'nullable|image|max:2048',
 
-            // 👇 Opcionales por categoría (NO obligatorios para no romper)
+            //  Opcionales por categoría (NO obligatorios para no romper)
             'modelo_panel'   => 'nullable|string|max:100',
             'eficiencia'     => 'nullable|numeric',
             'superficie'     => 'nullable|numeric',
@@ -195,7 +195,7 @@ class ProductoController extends Controller
             'id_vendedor'  => 'nullable|integer|exists:users,id',
             'imagen'       => 'nullable|image|max:2048',
 
-            // 👇 Opcionales por categoría
+            //  Opcionales por categoría
             'modelo_panel'   => 'nullable|string|max:100',
             'eficiencia'     => 'nullable|numeric',
             'superficie'     => 'nullable|numeric',

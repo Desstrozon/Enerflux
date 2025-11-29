@@ -137,7 +137,7 @@ export default function CartSidebar({ visible, onHide }: Props) {
       dismissable
       showCloseIcon
       blockScroll
-      className="cart-panel !w-full md:!w-[28rem]"  // 👈 clase para forzar superficies
+      className="cart-panel !w-full md:!w-[28rem]"  //  clase para forzar superficies
       pt={{
         content: { className: '!p-0' },
         mask: { className: 'backdrop-blur-[2px]' }

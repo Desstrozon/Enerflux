@@ -34,7 +34,7 @@ class CustomStudyController extends Controller
                     'Inversor híbrido 3 kW',
                     'Opción de batería de 5 kWh para aumentar el autoconsumo nocturno',
                 ],
-                'image' => 'monitorizacion.png', // pon esta imagen en public/img/
+                'image' => 'monitorizacion.png', 
             ],
 
             'aislada' => [

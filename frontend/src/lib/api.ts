@@ -9,7 +9,7 @@ function buildUrl(path: string) {
   return path.startsWith("/") ? `${API_URL}${path}` : `${API_URL}/${path}`;
 }
 
-// 👉 Headers para peticiones normales (JSON)
+//  Headers para peticiones normales (JSON)
 export function authHeaders(extra?: Record<string, string>) {
   const token = localStorage.getItem("token");
   return {

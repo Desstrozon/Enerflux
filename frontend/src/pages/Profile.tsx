@@ -276,7 +276,7 @@ export default function UserProfile() {
     );
   }
 
-  // 👇 padding-top alto para que no lo tape el navbar fijo, y padding-bottom para la barra sticky
+  //  padding-top alto para que no lo tape el navbar fijo, y padding-bottom para la barra sticky
   return (
     <main className="container mx-auto px-4 pt-24 pb-28">
       {/* Header */}

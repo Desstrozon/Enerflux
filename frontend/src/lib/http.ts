@@ -1,12 +1,15 @@
 // src/lib/http.ts
-export const API = import.meta.env.VITE_API_BASE_URL as string;
+const API =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
+  "http://127.0.0.1:8000/api";
+export { API };
 
 export function authHeaders() {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-/** 🔹 Extrae un mensaje legible del body de error (JSON o texto) */
+/**  Extrae un mensaje legible del body de error (JSON o texto) */
 export async function readErrorBody(res: Response): Promise<string> {
   try {
     const ct = res.headers.get("content-type") || "";
@@ -28,7 +31,7 @@ export async function readErrorBody(res: Response): Promise<string> {
   }
 }
 
-/** 🔹 Lanza Error con mensaje limpio si la respuesta no es OK */
+/**  Lanza Error con mensaje limpio si la respuesta no es OK */
 async function ensureOk(res: Response) {
   if (!res.ok) {
     throw new Error(await readErrorBody(res));

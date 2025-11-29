@@ -22,7 +22,7 @@ class OrderPaidNotification extends Notification
      */
     public function via($notifiable): array
     {
-        return ['database']; // ['mail', 'database'] si quisieras también correo aquí
+        return ['database']; // ['mail', 'database'] si quisiera también correo aquí
     }
 
     /**

@@ -18,7 +18,7 @@ class CartItem extends Model
         'image_snapshot',
     ];
 
-    // Mantén updated_at del carrito cuando cambien sus items
+    //  updated_at del carrito cuando cambien sus items
     protected $touches = ['cart'];
 
     // Tipado cómodo para el frontend
@@ -35,7 +35,7 @@ class CartItem extends Model
         return $this->belongsTo(Cart::class);
     }
 
-    // Ojo: Producto usa PK 'id_producto'
+    // Producto usa PK 'id_producto'
     public function producto(): BelongsTo
     {
         return $this->belongsTo(Producto::class, 'producto_id', 'id_producto');
@@ -68,7 +68,7 @@ class CartItem extends Model
     protected static function booted(): void
     {
         $recalc = function (CartItem $item): void {
-            // Evita N+1: solo si el carrito está cargado o puede cargarse
+            
             if ($item->relationLoaded('cart')) {
                 $item->cart?->recalcTotals();
             } else {

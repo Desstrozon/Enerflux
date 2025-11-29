@@ -13,7 +13,7 @@ class EnsureRole
             abort(401, 'Unauthenticated.');
         }
 
-        // tu app usa 'rol'; acepta también 'role' por compatibilidad
+        // usa 'rol'; acepta también 'role' por compatibilidad
         $role = strtolower($user->rol ?? $user->role ?? '');
 
         // si el middleware se usa sin argumentos, exige admin por defecto

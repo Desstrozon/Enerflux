@@ -23,7 +23,7 @@ class RegisterRequest extends FormRequest
 
             'zona'      => ['required_if:rol,vendedor', 'string', 'max:120'],
             'direccion' => ['nullable', 'string', 'max:255'],
-            // ⬇⬇⬇ CAMPOS EXTRA DEL VENDEDOR ⬇⬇⬇
+            //  CAMPOS EXTRA DEL VENDEDOR 
             'vendor_brand'   => ['nullable', 'string', 'max:150'],
             'vendor_company' => ['nullable', 'string', 'max:150'],
             'vendor_website' => ['nullable', 'string', 'max:200'],

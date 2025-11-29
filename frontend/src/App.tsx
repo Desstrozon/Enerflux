@@ -42,6 +42,11 @@ import { CartProvider } from "@/context/CartContext";
 
 const queryClient = new QueryClient();
 
+const routerBasename =
+  import.meta.env.VITE_ROUTER_BASENAME && import.meta.env.VITE_ROUTER_BASENAME !== ""
+    ? import.meta.env.VITE_ROUTER_BASENAME
+    : "/";  
+
 const App = () => (
   <PrimeReactProvider value={{ ripple: true }}>
     <QueryClientProvider client={queryClient}>
@@ -49,7 +54,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <CartProvider>
-          <BrowserRouter basename="/frontend">
+          <BrowserRouter basename={routerBasename}>
             <Routes>
               {/* Todo lo de aquí dentro tendrá Navbar (SiteLayout) */}
               <Route element={<SiteLayout />}>

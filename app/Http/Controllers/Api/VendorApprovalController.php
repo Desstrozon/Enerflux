@@ -35,7 +35,7 @@ class VendorApprovalController extends Controller
             return response()->json(['message' => 'El usuario no es vendedor'], 422);
         }
 
-        $note = $request->input('note'); // opcional
+        $note = $request->input('note'); 
 
         $user->vendor_status = 'approved';
         $user->vendor_note  = $note;

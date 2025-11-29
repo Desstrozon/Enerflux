@@ -4,7 +4,7 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
-// 👇 Añade estas importaciones
+//  Añade estas importaciones
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\TrimStrings;
@@ -19,7 +19,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         TrustProxies::class,
-        HandleCors::class, // ✅ CORS
+        HandleCors::class, //  CORS
         PreventRequestsDuringMaintenance::class,
         ValidatePostSize::class,
         TrimStrings::class,

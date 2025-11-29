@@ -1,4 +1,16 @@
-import { ShoppingBag, User, ArrowLeft, Menu, X } from "lucide-react";
+import {
+  ShoppingBag,
+  User,
+  ArrowLeft,
+  Menu,
+  X,
+  ShoppingCart,
+  Home,
+  SunMedium,
+  MessageCircle,
+  Package,
+  LayoutDashboard,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -90,9 +102,7 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() =>
-                isAdminRoot ? navigate("/") : navigate("/admin")
-              }
+              onClick={() => (isAdminRoot ? navigate("/") : navigate("/admin"))}
               className="flex items-center gap-2"
               title={isAdminRoot ? "Volver al inicio" : "Volver al panel"}
             >
@@ -110,46 +120,60 @@ const Navbar = () => {
           )}
 
           {/* CENTRO: menú escritorio */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             <button
               onClick={() => navigate("/?scroll=inicio")}
-              className="text-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors"
             >
-              Inicio
+              <Home className="h-4 w-4" />
+              <span>Inicio</span>
             </button>
+
             <button
+              className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors"
               onClick={() => navigate("/?scroll=productos")}
-              className="text-foreground hover:text-primary transition-colors"
             >
-              Productos
+              <ShoppingCart className="h-4 w-4" />
+              <span>Ver productos</span>
             </button>
+
             <button
               onClick={() => navigate("/estudio-personalizado")}
-              className="text-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors"
             >
-              Estudio personalizado
+              <SunMedium className="h-4 w-4" />
+              <span>Estudio personalizado</span>
             </button>
+
             <button
               onClick={() => navigate("/contacto")}
-              className="text-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors"
             >
-              Contacto
+              <MessageCircle className="h-4 w-4" />
+              <span>Contacto</span>
             </button>
 
             {isLoggedIn && (
               <NavLink
                 to="/mis-pedidos"
-                className="text-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors"
               >
-                Mis pedidos
+                <Package className="h-4 w-4" />
+                <span>Mis pedidos</span>
               </NavLink>
             )}
 
             {isAdmin && (
               <>
                 <span className="opacity-30">|</span>
-                <NavLink to="/admin" className={`transition-colors ${active("/admin")}`}>
-                  Panel (Admin)
+                <NavLink
+                  to="/admin"
+                  className={`inline-flex items-center gap-2 text-sm transition-colors ${active(
+                    "/admin"
+                  )}`}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  <span>Panel (Admin)</span>
                 </NavLink>
               </>
             )}
@@ -177,7 +201,11 @@ const Navbar = () => {
                   <span className="hidden sm:inline text-sm text-muted-foreground">
                     {authUser.name}
                   </span>
-                  <Button variant="outline" size="sm" onClick={() => navigate("/profile")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate("/profile")}
+                  >
                     <User className="h-4 w-4 mr-2" />
                     Perfil
                   </Button>
@@ -187,7 +215,11 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <Button variant="outline" size="sm" onClick={() => navigate("/login")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate("/login")}
+                  >
                     <User className="h-4 w-4 mr-2" />
                     Ingresar
                   </Button>
@@ -219,45 +251,58 @@ const Navbar = () => {
           <div className="md:hidden border-t border-border bg-background">
             <div className="container mx-auto px-4 py-3 flex flex-col gap-3">
               <button
-                className="text-left text-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 text-left text-foreground hover:text-primary transition-colors"
                 onClick={() => closeMobileAnd(() => navigate("/?scroll=inicio"))}
               >
-                Inicio
+                <Home className="h-4 w-4" />
+                <span>Inicio</span>
               </button>
+
               <button
-                className="text-left text-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 text-left text-foreground hover:text-primary transition-colors"
                 onClick={() => closeMobileAnd(() => navigate("/?scroll=productos"))}
               >
-                Productos
+                <ShoppingCart className="h-4 w-4" />
+                <span>Productos</span>
               </button>
+
               <button
-                className="text-left text-foreground hover:text-primary transition-colors"
-                onClick={() => closeMobileAnd(() => navigate("/estudio-personalizado"))}
+                className="inline-flex items-center gap-2 text-left text-foreground hover:text-primary transition-colors"
+                onClick={() =>
+                  closeMobileAnd(() => navigate("/estudio-personalizado"))
+                }
               >
-                Estudio personalizado
+                <SunMedium className="h-4 w-4" />
+                <span>Estudio personalizado</span>
               </button>
+
               <button
-                className="text-left text-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 text-left text-foreground hover:text-primary transition-colors"
                 onClick={() => closeMobileAnd(() => navigate("/contacto"))}
               >
-                Contacto
+                <MessageCircle className="h-4 w-4" />
+                <span>Contacto</span>
               </button>
 
               {isLoggedIn && (
                 <button
-                  className="text-left text-foreground hover:text-primary transition-colors"
+                  className="inline-flex items-center gap-2 text-left text-foreground hover:text-primary transition-colors"
                   onClick={() => closeMobileAnd(() => navigate("/mis-pedidos"))}
                 >
-                  Mis pedidos
+                  <Package className="h-4 w-4" />
+                  <span>Mis pedidos</span>
                 </button>
               )}
 
               {isAdmin && (
                 <button
-                  className={`text-left transition-colors ${active("/admin")}`}
+                  className={`inline-flex items-center gap-2 text-left transition-colors ${active(
+                    "/admin"
+                  )}`}
                   onClick={() => closeMobileAnd(() => navigate("/admin"))}
                 >
-                  Panel (Admin)
+                  <LayoutDashboard className="h-4 w-4" />
+                  <span>Panel (Admin)</span>
                 </button>
               )}
 

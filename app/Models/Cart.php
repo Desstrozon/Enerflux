@@ -18,7 +18,7 @@ class Cart extends Model
         'total',
     ];
 
-    // 👇 Casts: en Laravel, decimal:N devuelve string; usa float si prefieres número JS-like
+   
     protected $casts = [
         'subtotal' => 'float',
         'total'    => 'float',

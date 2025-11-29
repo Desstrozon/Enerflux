@@ -14,7 +14,7 @@ class ProductImage extends Model
         'sort_order',
     ];
 
-    // si quieres que "url" salga siempre en las respuestas JSON
+    // 
     protected $appends = ['url'];
     
     protected $hidden = ['path', 'updated_at', 'created_at'];

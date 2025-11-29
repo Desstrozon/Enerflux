@@ -102,7 +102,7 @@ class MeController extends Controller
         'zona'     => $data['zona'] ?? $u->perfilVendedor?->zona ?? null,
       ];
 
-      // 👇 clave foránea real: id_usuario
+      //  clave foránea real: id_usuario
       $u->perfilVendedor()->updateOrCreate(
         ['id_usuario' => $u->id],
         $payload

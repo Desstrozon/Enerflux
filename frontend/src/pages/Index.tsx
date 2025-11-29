@@ -39,7 +39,7 @@ const Index = () => {
         <Hero />
       </div>
       <Features />
-      {/* 👇 esta sección ya tiene id="productos" dentro del componente */}
+      {/* esta sección ya tiene id="productos" dentro del componente */}
       <ProductShowcase />
       <Footer />
     </div>

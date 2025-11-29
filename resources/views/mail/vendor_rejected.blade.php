@@ -48,7 +48,7 @@
 
                         <p style="margin:12px 0 8px; font-size:14px; color:#9ca3af;">
                             Esto no impide que puedas <strong>volver a solicitar el alta</strong> más adelante,
-                            por ejemplo ajustando la información de tu actividad, datos de contacto o zona de trabajo.
+                            por favor contacta con nosotros a traves de nuestro aparado de Contacto en la pagina en la parte superior.
                         </p>
 
                         <p style="margin:12px 0 0; font-size:13px; color:#6b7280;">

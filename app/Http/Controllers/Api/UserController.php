@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    // 🔹 Listar todos los usuarios (admin)
+    //  Listar todos los usuarios (admin)
     public function index(Request $request)
     {
         $this->ensureAdmin($request);
@@ -70,7 +70,7 @@ class UserController extends Controller
         return response()->json($res);
     }
 
-    // 🔹 Solo vendedores (admin)
+    //  Solo vendedores (admin)
     public function vendedores(Request $request)
     {
         $this->ensureAdmin($request);
@@ -93,7 +93,7 @@ class UserController extends Controller
         return response()->json($res);
     }
 
-    // 🔹 Solicitudes de vendedor PENDIENTES (solo admin)
+    //  Solicitudes de vendedor PENDIENTES (solo admin)
     public function vendorRequests(Request $request)
     {
         $this->ensureAdmin($request);
@@ -127,7 +127,7 @@ class UserController extends Controller
         return response()->json($rows);
     }
 
-    // 🔹 Crear usuario (solo admin)
+    //  Crear usuario (solo admin)
     public function store(Request $request)
     {
         $this->ensureAdmin($request);
@@ -188,7 +188,7 @@ class UserController extends Controller
                 ] as $f
             ) {
                 if (array_key_exists($f, $data)) {
-                    // 👇 dirección nunca puede ser null por la constraint NOT NULL
+                    //  dirección nunca puede ser null por la constraint NOT NULL
                     if ($f === 'direccion') {
                         $pc->{$f} = $data[$f] ?? '';
                     } else {
@@ -211,7 +211,7 @@ class UserController extends Controller
     }
 
 
-    // 🔹 Actualizar usuario (admin o propio)
+    //  Actualizar usuario (admin o propio)
     public function update(Request $request, $id)
     {
         $auth = $request->user();
@@ -232,7 +232,7 @@ class UserController extends Controller
             $rules['rol'] = ['sometimes', 'string', Rule::in(['admin', 'administrador', 'vendedor', 'cliente'])];
         }
 
-        // 🔹 CAMPOS DE PERFIL (cliente + vendedor)
+        //  CAMPOS DE PERFIL (cliente + vendedor)
         $rules += [
             'telefono'      => ['nullable', 'string', 'max:50'],
             'zona'          => ['nullable', 'string', 'max:255'],
@@ -300,7 +300,7 @@ class UserController extends Controller
 
 
 
-    // 🔹 Eliminar usuario (solo admin; evita borrarse a sí mismo)
+    //  Eliminar usuario (solo admin; evita borrarse a sí mismo)
     public function destroy(Request $request, $id)
     {
         $this->ensureAdmin($request);
@@ -318,7 +318,7 @@ class UserController extends Controller
         return response()->json(['message' => 'Usuario eliminado correctamente']);
     }
 
-    // 🔹 Actualizar perfil propio (cliente/vendedor/admin)
+    //  Actualizar perfil propio (cliente/vendedor/admin)
     public function updateSelf(Request $request)
     {
         $user = $request->user();
@@ -386,7 +386,7 @@ class UserController extends Controller
         return response()->json(['message' => 'Perfil actualizado', 'user' => $user]);
     }
 
-    // 🔹 Cambiar contraseña (propio)
+    //  Cambiar contraseña (propio)
     public function changePassword(Request $request)
     {
         $user = $request->user();

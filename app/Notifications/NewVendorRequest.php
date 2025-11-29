@@ -3,11 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;            // opcional (cola)
+use Illuminate\Contracts\Queue\ShouldQueue;           
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewVendorRequest extends Notification implements ShouldQueue // quita "implements ShouldQueue" si no usarás colas
+class NewVendorRequest extends Notification implements ShouldQueue 
 {
     use Queueable;
 
@@ -51,7 +51,7 @@ class NewVendorRequest extends Notification implements ShouldQueue // quita "imp
     }
 
 
-    /** (Opcional) payload para database notifications si algún día las habilitas */
+    /** payload para database notifications si algún día se habilita */
     public function toArray(object $notifiable): array
     {
         return [

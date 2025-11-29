@@ -60,8 +60,29 @@ export default function Register() {
       });
 
       if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        await alertError(text || "No se pudo registrar");
+        let msg = "No se pudo completar el registro.";
+
+        try {
+          const data = await res.json();
+
+          // Caso típico: email duplicado
+          if (
+            res.status === 422 &&
+            data?.errors?.email &&
+            Array.isArray(data.errors.email)
+          ) {
+            msg =
+              rol === "vendedor"
+                ? "Este vendedor ya está registrado en nuestra base de datos. Si crees que es un error, contacta con el administrador."
+                : "Este correo ya está registrado en nuestra base de datos. Inicia sesión o usa otro email distinto.";
+          } else if (data?.message) {
+            msg = data.message;
+          }
+        } catch {
+          // Si falla el parseo, usamos el mensaje genérico
+        }
+
+        await alertError(msg);
         return;
       }
 

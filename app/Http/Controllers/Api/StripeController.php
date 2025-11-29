@@ -94,7 +94,7 @@ class StripeController extends Controller
             $price = (int) round(($item->unit_price ?? 0) * 100); // céntimos
             $img   = $item->image_snapshot ?: optional($item->producto)->imagen;
 
-            // URL pública de imagen (si almacenaste solo la ruta de storage)
+            // URL pública de imagen 
             $imageUrl = null;
             if ($img) {
                 if (str_starts_with($img, 'http')) {

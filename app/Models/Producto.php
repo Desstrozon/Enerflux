@@ -29,7 +29,7 @@ class Producto extends Model
     {
         return $this->belongsTo(User::class, 'id_vendedor');
     }
-    // app/Models/Producto.php
+   
     public function productReviews()
     {
         // fk = producto_id en product_reviews ; pk = id_producto en productos

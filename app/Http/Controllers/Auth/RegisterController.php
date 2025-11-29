@@ -16,7 +16,7 @@ class RegisterController extends Controller
 {
     public function store(RegisterRequest $request)
     {
-        // Si el front envía 'role', lo mapeamos a 'rol' para tu User
+        // Si el front envía 'role', lo mapeamos a 'rol' para User 
         $data = $request->validated();
 
         $brand   = (string) ($data['vendor_brand']   ?? '');
