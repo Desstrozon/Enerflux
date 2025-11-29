@@ -45,16 +45,19 @@ jobs:
         env:
           VITE_API_BASE_URL: "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/api"
 
-      - name: Copy frontend build to Laravel public/
+      # Aquí sustituimos la carpeta frontend del repo por el build de Vite
+      - name: Replace frontend folder with built assets
         run: |
-          # Limpia los assets antiguos
-          rm -rf public/assets public/*.png public/*.svg public/*.ico public/*.webp public/*.js public/*.css
+          # Guardar el build en una carpeta temporal
+          rm -rf frontend_build
+          mkdir frontend_build
+          cp -r frontend/dist/* frontend_build/
 
-          # Copia TODO el build al public root
-          cp -r frontend/dist/* public/
+          # Borrar el frontend de desarrollo (código TSX, config, etc.)
+          rm -rf frontend
 
-          # Limpia node_modules y dist del runner
-          rm -rf frontend/node_modules frontend/dist
+          # Renombrar la carpeta temporal a frontend (solo queda el build)
+          mv frontend_build frontend
 
       # ---------- DEPLOY A AZURE ----------
       - name: Login to Azure
