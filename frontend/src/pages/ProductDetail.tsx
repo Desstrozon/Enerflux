@@ -129,11 +129,13 @@ export default function ProductDetail() {
       ? (p!.images![0].url || p!.images![0].path || "")
       : "");
 
-      const mainUrl = mainRelOrUrl
-  ? mainRelOrUrl.startsWith("http")
-    ? mainRelOrUrl
-    : `${base}/storage/${mainRelOrUrl.replace(/^storage\//, "")}`
-  : null;
+  const mainUrl = mainRelOrUrl
+    ? mainRelOrUrl.startsWith("http")
+      ? mainRelOrUrl
+      : `${base}/storage/${mainRelOrUrl
+        .replace(/^storage\//, "")
+        .replace(/^public\//, "")}`
+    : null;
   // construimos el array de imágenes de galería
   const gallery: string[] = (() => {
     const urls: string[] = [];

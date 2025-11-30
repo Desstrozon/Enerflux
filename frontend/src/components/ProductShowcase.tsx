@@ -126,8 +126,11 @@ export default function ProductShowcase() {
             const imgUrl = relOrUrl
               ? relOrUrl.startsWith("http")
                 ? relOrUrl
-                : `${APP_BASE}/storage/${relOrUrl.replace(/^storage\//, "")}`
+                : `${APP_BASE}/storage/${relOrUrl
+                  .replace(/^storage\//, "")
+                  .replace(/^public\//, "")}`
               : "/default.png";
+
 
             const disponible = p.disponible ?? ((p.stock ?? 0) > 0);
             const r = ratings[p.id_producto] || { avg: 0, count: 0 };

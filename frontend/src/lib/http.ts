@@ -19,7 +19,10 @@ export async function apiPost<T = any>(path: string, body: any): Promise<T> {
 
 export const APP_BASE = API_BASE
   .replace(/\/api$/, "")        // quita el /api final
-  .replace(/\/index\.php$/, ""); 
+  .replace(/\/index\.php$/, "");
+
+console.log("API_BASE =", API_BASE);
+console.log("APP_BASE =", APP_BASE);
 
 // POST FormData (subida de imágenes, etc.)
 export async function apiPostForm<T = any>(
@@ -68,7 +71,7 @@ async function handleJson(res: Response) {
           .flat()
           .join(" ");
         if (flat) msg = flat;
-      } catch {}
+      } catch { }
     }
 
     const err: any = new Error(msg);

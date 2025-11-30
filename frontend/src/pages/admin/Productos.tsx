@@ -455,8 +455,11 @@ export default function ProductosAdmin() {
                 const imgUrl = relOrUrl
                   ? relOrUrl.startsWith("http")
                     ? relOrUrl
-                    : `${base}/storage/${relOrUrl.replace(/^storage\//, "")}`
+                    : `${base}/storage/${relOrUrl
+                      .replace(/^storage\//, "")
+                      .replace(/^public\//, "")}`
                   : "/default.png";
+
 
                 return (
                   <tr key={p.id_producto} className="border-t">
