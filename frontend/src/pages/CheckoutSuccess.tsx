@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { API_BASE } from "@/lib/http"; // 👈 usamos la base centralizada
+import { API_BASE } from "@/lib/http"; 
 
 type Order = {
   id: number;

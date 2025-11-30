@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ShoppingCart, ArrowLeft, Trash2 } from "lucide-react";
-import { apiGet, apiPost, apiDelete } from "@/lib/api";
+import { apiGet, apiPost, apiDelete } from "@/lib/http";
 import { useCart } from "@/context/CartContext";
 import { alertError, alertSuccess, confirm } from "@/lib/alerts";
 import StarRating from "@/components/StarRating";

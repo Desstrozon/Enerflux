@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye, ShoppingCart } from "lucide-react";
-import { apiGet } from "@/lib/api";
+import { apiGet } from "@/lib/http";
 import { useCart } from "@/context/CartContext";
 import { useNavigate } from "react-router-dom";
 import StarRating from "@/components/StarRating";
@@ -29,7 +29,7 @@ export default function ProductShowcase() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // ⭐ caché por producto
+  //  caché por producto
   const [ratings, setRatings] = useState<Record<number, RatingSummary>>({});
   const [q, setQ] = useState("");
 
@@ -58,7 +58,7 @@ export default function ProductShowcase() {
         setRatings(map);
       } finally {
         setLoading(false);
-        // 🔔 AVISO: la sección “productos” ya está disponible (para que Index haga scroll aunque tarde en cargar)
+        //  AVISO: la sección “productos” ya está disponible (para que Index haga scroll aunque tarde en cargar)
         setTimeout(() => {
           window.dispatchEvent(new CustomEvent("section:ready", { detail: "productos" }));
         }, 0);
