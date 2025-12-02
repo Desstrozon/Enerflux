@@ -1,15 +1,14 @@
 // src/lib/http.ts
 
 // ==== BASE URL ====
-// PROD: siempre {origin}/index.php/api  (Azure)
+// PROD: siempre {origin}/public/index.php/api  (Azure)
 // DEV: VITE_API_BASE_URL o 127.0.0.1:8000/api
-export const API_BASE =
-  import.meta.env.MODE === "production"
-    ? `${window.location.origin}/index.php/api`
+const isAzure = window.location.hostname.includes('azurewebsites.net');
+export const API_BASE = isAzure
+    ? `${window.location.origin}/public/index.php/api`
     : (import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api");
 
-// (Opcional, pero muy útil ahora)
-console.log("API_BASE = ", API_BASE);
+
 
 // src/lib/http.ts  --
 
@@ -19,10 +18,9 @@ export async function apiPost<T = any>(path: string, body: any): Promise<T> {
 
 export const APP_BASE = API_BASE
   .replace(/\/api$/, "")        // quita el /api final
-  .replace(/\/index\.php$/, "");
+  .replace(/\/index\.php$/, ""); // quita el /index.php para que quede solo /public
 
-console.log("API_BASE =", API_BASE);
-console.log("APP_BASE =", APP_BASE);
+
 
 // POST FormData (subida de imágenes, etc.)
 export async function apiPostForm<T = any>(

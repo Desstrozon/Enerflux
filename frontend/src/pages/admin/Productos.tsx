@@ -118,7 +118,7 @@ export default function ProductosAdmin() {
             .filter(Boolean) as string[]),
         galeriaFiles: [] as File[],
       });
-      const img = full.imagen ? `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${full.imagen}` : "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png";
+      const img = full.imagen ? `${base}/storage/${full.imagen}` : `${base}/default.png`;
       setPreview(img);
       setGaleriaPreviewNuevos([]);
       setShowForm(true);
@@ -365,7 +365,7 @@ export default function ProductosAdmin() {
                 {Array.isArray(form.galeriaActual) && form.galeriaActual.length > 0 && (
                   <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
                     {(form.galeriaActual as string[]).map((rel: string) => {
-                      const url = `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${rel}`;
+                      const url = `${base}/storage/${rel}`;
                       return (
                         <div key={rel} className="relative">
                           <img src={url} className="w-full h-24 object-cover rounded border" />
@@ -455,11 +455,10 @@ export default function ProductosAdmin() {
                 const imgUrl = relOrUrl
                   ? relOrUrl.startsWith("http")
                     ? relOrUrl
-                    : `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${relOrUrl
+                    : `${base}/storage/${relOrUrl
                       .replace(/^storage\//, "")
                       .replace(/^public\//, "")}`
-                  : "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png";
-
+                  : `${base}/default.png`;
 
                 return (
                   <tr key={p.id_producto} className="border-t">
@@ -470,9 +469,12 @@ export default function ProductosAdmin() {
                     <td className="p-2">
                       <img
                         src={imgUrl}
+                        
                         alt={p.nombre}
                         className="h-12 w-12 object-cover rounded border hover:scale-110 transition-transform"
                       />
+                      console.log{imgUrl};
+                      
                     </td>
                     <td className="p-2">{p.nombre}</td>
                     <td className="p-2">{p.categoria}</td>
