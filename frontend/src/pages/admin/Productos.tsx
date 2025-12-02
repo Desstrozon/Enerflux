@@ -473,7 +473,7 @@ export default function ProductosAdmin() {
                         alt={p.nombre}
                         className="h-12 w-12 object-cover rounded border hover:scale-110 transition-transform"
                       />
-                      console.log{imgUrl};
+                      
                       
                     </td>
                     <td className="p-2">{p.nombre}</td>
