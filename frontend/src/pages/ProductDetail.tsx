@@ -132,7 +132,7 @@ export default function ProductDetail() {
   const mainUrl = mainRelOrUrl
     ? mainRelOrUrl.startsWith("http")
       ? mainRelOrUrl
-      : `${base}/storage/${mainRelOrUrl
+      : `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${mainRelOrUrl
         .replace(/^storage\//, "")
         .replace(/^public\//, "")}`
     : null;
@@ -144,20 +144,20 @@ export default function ProductDetail() {
     // si el backend devuelve 'galeria' como rutas relativas
     if (Array.isArray(p?.galeria)) {
       for (const rel of p!.galeria!) {
-        urls.push(`${base}/storage/${rel}`);
+        urls.push(`https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${rel}`);
       }
     }
 
     // o si devuelve 'images' con objetos { path | url }
     if (Array.isArray(p?.images)) {
       for (const im of p!.images!) {
-        const u = im.url ?? (im.path ? `${base}/storage/${im.path}` : null);
+        const u = im.url ?? (im.path ? `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${im.path}` : null);
         if (u) urls.push(u);
       }
     }
 
     const uniq = Array.from(new Set(urls));
-    return uniq.length ? uniq : ["/default.png"];
+    return uniq.length ? uniq : ["https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png"];
   })();
 
   const [idx, setIdx] = useState(0);

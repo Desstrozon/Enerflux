@@ -118,7 +118,7 @@ export default function ProductosAdmin() {
             .filter(Boolean) as string[]),
         galeriaFiles: [] as File[],
       });
-      const img = full.imagen ? `${base}/storage/${full.imagen}` : "/default.png";
+      const img = full.imagen ? `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${full.imagen}` : "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png";
       setPreview(img);
       setGaleriaPreviewNuevos([]);
       setShowForm(true);
@@ -365,7 +365,7 @@ export default function ProductosAdmin() {
                 {Array.isArray(form.galeriaActual) && form.galeriaActual.length > 0 && (
                   <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
                     {(form.galeriaActual as string[]).map((rel: string) => {
-                      const url = `${base}/storage/${rel}`;
+                      const url = `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${rel}`;
                       return (
                         <div key={rel} className="relative">
                           <img src={url} className="w-full h-24 object-cover rounded border" />
@@ -455,10 +455,10 @@ export default function ProductosAdmin() {
                 const imgUrl = relOrUrl
                   ? relOrUrl.startsWith("http")
                     ? relOrUrl
-                    : `${base}/storage/${relOrUrl
+                    : `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${relOrUrl
                       .replace(/^storage\//, "")
                       .replace(/^public\//, "")}`
-                  : "/default.png";
+                  : "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png";
 
 
                 return (

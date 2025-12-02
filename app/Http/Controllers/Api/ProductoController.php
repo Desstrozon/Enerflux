@@ -9,7 +9,6 @@ use App\Models\CartItem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
 //  AÑADIR ESTOS IMPORTS
 use App\Models\Panel;
 use App\Models\Bateria;

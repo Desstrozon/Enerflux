@@ -30,8 +30,8 @@ export default function Carrito() {
                   item.imagen
                     ? item.imagen.startsWith("http")
                       ? item.imagen
-                      : `${APP_BASE}/storage/${item.imagen.replace(/^storage\//, "")}`
-                    : "/default.png"
+                      : `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${item.imagen.replace(/^storage\//, "")}`
+                    : "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png"
                 }
                 alt={item.nombre}
                 className="w-16 h-16 object-cover rounded"
