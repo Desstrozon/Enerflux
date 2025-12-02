@@ -139,7 +139,6 @@ class ProductoController extends Controller
         if ($request->hasFile('imagen')) {
             $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
         } else {
-            // debe existir storage/app/public/productos/default.png
             $validated['imagen'] = 'productos/default.png';
         }
 

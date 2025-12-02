@@ -126,10 +126,10 @@ export default function ProductShowcase() {
             const imgUrl = relOrUrl
               ? relOrUrl.startsWith("http")
                 ? relOrUrl
-                : `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${relOrUrl
+                : `${APP_BASE}/storage/${relOrUrl
                   .replace(/^storage\//, "")
                   .replace(/^public\//, "")}`
-              : "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png";
+              : `${APP_BASE}/default.png`;
 
 
             const disponible = p.disponible ?? ((p.stock ?? 0) > 0);

@@ -49,9 +49,13 @@ export default function CartSidebar({ visible, onHide }: Props) {
 
   const itemTemplate = (item: ProductoCarrito): React.ReactNode => {
     const cantidad = item.cantidad ?? 1;
+    const baseUrl = import.meta.env.MODE === "production" || window.location.hostname.includes('azurewebsites.net')
+      ? `${window.location.origin}/public`
+      : (import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://127.0.0.1:8000');
+    
     const imgSrc = item.imagen
-      ? `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${item.imagen}`
-      : 'https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png';
+      ? `${baseUrl}/storage/${item.imagen}`
+      : `${baseUrl}/default.png`;
 
     return (
       <div className="group flex items-center justify-between w-full rounded-2xl border border-border/70 bg-card hover:bg-primary/5 transition-colors px-3 py-2">

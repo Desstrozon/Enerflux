@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/frontend/index.html');
+    return file_get_contents(public_path('frontend/index.html'));
 })->name('inicio');
 
 Route::middleware([
@@ -25,3 +25,8 @@ Route::get('/storage/{path}', function ($path) {
 
     return response()->file($file);
 })->where('path', '.*');
+
+// Catch-all para el frontend SPA (debe ir al final)
+Route::get('/{any}', function () {
+    return file_get_contents(public_path('frontend/index.html'));
+})->where('any', '^(?!api|storage|public).*$');
