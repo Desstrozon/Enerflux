@@ -11,7 +11,7 @@ export const API_BASE =
 // (Opcional, pero muy útil ahora)
 console.log("API_BASE = ", API_BASE);
 
-// src/lib/http.ts
+// src/lib/http.ts  --
 
 export async function apiPost<T = any>(path: string, body: any): Promise<T> {
   return apiPostJson<T>(path, body);
