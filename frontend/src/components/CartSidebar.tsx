@@ -50,8 +50,8 @@ export default function CartSidebar({ visible, onHide }: Props) {
   const itemTemplate = (item: ProductoCarrito): React.ReactNode => {
     const cantidad = item.cantidad ?? 1;
     const imgSrc = item.imagen
-      ? `https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/storage/${item.imagen}`
-      : 'https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/default.png';
+      ? `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || window.location.origin + '/public'}/storage/${item.imagen}`
+      : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || window.location.origin + '/public'}/default.png`;
 
     return (
       <div className="group flex items-center justify-between w-full rounded-2xl border border-border/70 bg-card hover:bg-primary/5 transition-colors px-3 py-2">
