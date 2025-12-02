@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return response()->file(public_path('frontend/index.html'));
+    $path = public_path('frontend/index.html');
+    if (!file_exists($path)) {
+        abort(404, 'Frontend index.html not found');
+    }
+    return response()->file($path);
 })->name('inicio');
 
 Route::middleware([
