@@ -6,6 +6,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { useCart, ProductoCarrito } from '@/context/CartContext';
 import { startCheckout } from "@/lib/checkout";
 import { alertInfo, alertError } from "@/lib/alerts";
+import { buildImageUrl } from "@/lib/http";
 
 type Props = { visible: boolean; onHide: () => void };
 
@@ -49,9 +50,7 @@ export default function CartSidebar({ visible, onHide }: Props) {
 
   const itemTemplate = (item: ProductoCarrito): React.ReactNode => {
     const cantidad = item.cantidad ?? 1;
-    const imgSrc = item.imagen
-      ? `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || window.location.origin + '/public'}/storage/${item.imagen}`
-      : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || window.location.origin + '/public'}/default.png`;
+    const imgSrc = buildImageUrl(item.imagen);
 
     return (
       <div className="group flex items-center justify-between w-full rounded-2xl border border-border/70 bg-card hover:bg-primary/5 transition-colors px-3 py-2">

@@ -20,6 +20,21 @@ export const APP_BASE = API_BASE
   .replace(/\/api$/, "")        // quita el /api final
   .replace(/\/index\.php$/, ""); // quita el /index.php para que quede solo /public
 
+// Construye URL de imagen (storage o default)
+export function buildImageUrl(imagen?: string | null): string {
+  if (!imagen) {
+    return `${APP_BASE}/default.png`;
+  }
+  
+  if (imagen.startsWith("http://") || imagen.startsWith("https://")) {
+    return imagen;
+  }
+  
+  // Limpia el path de storage/
+  const cleanPath = imagen.replace(/^storage\//, "");
+  return `${APP_BASE}/storage/${cleanPath}`;
+}
+
 
 
 // POST FormData (subida de imágenes, etc.)
