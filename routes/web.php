@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/frontend/index.html');
+    return redirect('/frontend');
 })->name('inicio');
 
 Route::middleware([
