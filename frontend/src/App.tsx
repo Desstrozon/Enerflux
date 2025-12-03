@@ -37,7 +37,7 @@ import "primeicons/primeicons.css";
 import "./index.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 
-// 🛒 Carrito
+//  Carrito
 import { CartProvider } from "@/context/CartContext";
 
 const queryClient = new QueryClient();
@@ -45,6 +45,8 @@ const queryClient = new QueryClient();
 const routerBasename =
   import.meta.env.VITE_ROUTER_BASENAME && import.meta.env.VITE_ROUTER_BASENAME !== ""
     ? import.meta.env.VITE_ROUTER_BASENAME
+    : window.location.hostname.includes('azurewebsites.net')
+    ? "/frontend"
     : "/";  
 
 const App = () => (
