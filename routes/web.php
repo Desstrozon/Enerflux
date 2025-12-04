@@ -27,10 +27,12 @@ Route::get('/storage/{path}', function ($path) {
 })->where('path', '.*');
 
 // Catch-all para React Router: todas las rutas /frontend/* sirven el index.html
-Route::get('/frontend/{any}', function () {
-    $indexPath = public_path('frontend/');
-    if (file_exists($indexPath)) {
-        return response()->file($indexPath);
+Route::get('/frontend/{any?}', function () {
+    $indexPath = public_path('frontend/index.html'); // OJO: archivo, no carpeta
+
+    if (!file_exists($indexPath)) {
+        abort(404, 'Frontend index not found');
     }
-    abort(404, 'Frontend not found');
+
+    return response()->file($indexPath);
 })->where('any', '.*');

@@ -120,23 +120,21 @@ class StripeController extends Controller
             ];
         })->values()->all();
 
-        // Construir URLs de redirección
-        // En Azure: https://enerflux...azurewebsites.net/frontend/checkout/success
-        // En local: http://192.168.56.1:8080/checkout/success
-        $baseUrl = request()->getSchemeAndHttpHost();
+
+        $baseUrl = rtrim(env('FRONTEND_URL', request()->getSchemeAndHttpHost()), '/');
         $isAzure = str_contains($baseUrl, 'azurewebsites.net');
 
         if ($isAzure) {
-            $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
-            $successUrl = $frontendUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl  = $frontendUrl . '/frontend/checkout/cancel';
+            // Producción en Azure
+            $successUrl = $baseUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl  = $baseUrl . '/frontend/checkout/cancel';
+        } else {
+            // Local
+            $localFrontend = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
+            $successUrl    = $localFrontend . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl     = $localFrontend . '/checkout/cancel';
         }
-        // } else {
-        //     // Local: usar FRONTEND_URL si existe
-        //     $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
-        //     $successUrl = $frontendUrl . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-        //     $cancelUrl  = $frontendUrl . '/checkout/cancel';
-        // }
+
 
         // =========================
         //  Customer + dirección
