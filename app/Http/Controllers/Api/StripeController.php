@@ -125,14 +125,14 @@ class StripeController extends Controller
         $isAzure = str_contains($baseUrl, 'azurewebsites.net');
 
         if ($isAzure) {
-            // Producción en Azure
-            $successUrl = $baseUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl  = $baseUrl . '/frontend/checkout/cancel';
+            // Producción en Azure con HashRouter
+            $successUrl = $baseUrl . '/frontend/#/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl  = $baseUrl . '/frontend/#/checkout/cancel';
         } else {
             // Local
             $localFrontend = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
-            $successUrl    = $localFrontend . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl     = $localFrontend . '/checkout/cancel';
+            $successUrl    = $localFrontend . '/#/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl     = $localFrontend . '/#/checkout/cancel';
         }
 
 
