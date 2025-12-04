@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/frontend');
+    return redirect('/frontend/');
 })->name('inicio');
 
 Route::middleware([
@@ -25,3 +25,12 @@ Route::get('/storage/{path}', function ($path) {
 
     return response()->file($file);
 })->where('path', '.*');
+
+// Catch-all para React Router: todas las rutas /frontend/* sirven el index.html
+Route::get('/frontend/{any}', function () {
+    $indexPath = public_path('frontend/index.html');
+    if (file_exists($indexPath)) {
+        return response()->file($indexPath);
+    }
+    abort(404, 'Frontend not found');
+})->where('any', '.*');
