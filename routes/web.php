@@ -25,3 +25,8 @@ Route::get('/storage/{path}', function ($path) {
 
     return response()->file($file);
 })->where('path', '.*');
+
+// Catch-all para React Router: sirve index.html para todas las rutas /frontend/*
+Route::get('/frontend/{any}', function () {
+    return response()->file(base_path('frontend/index.html'));
+})->where('any', '.*');
