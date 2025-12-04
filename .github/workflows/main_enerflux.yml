@@ -45,19 +45,17 @@ jobs:
         env:
           VITE_API_BASE_URL: "https://enerflux-h2dga2ajeda7cnb7.spaincentral-01.azurewebsites.net/api"
 
-      # Reemplazar carpeta frontend con el build
+      # Reemplazar carpeta frontend con SOLO el build (dist/)
       - name: Replace frontend folder with built assets
         run: |
-          # Guardar el build en una carpeta temporal
-          rm -rf frontend_build
-          mkdir frontend_build
-          cp -r frontend/dist/* frontend_build/
-
-          # Borrar el frontend de desarrollo (código TSX, config, etc.)
-          rm -rf frontend
-
-          # Renombrar la carpeta temporal a frontend (solo queda el build)
-          mv frontend_build frontend
+          # Borrar todo el contenido de frontend EXCEPTO dist
+          find frontend -mindepth 1 -maxdepth 1 ! -name 'dist' -exec rm -rf {} +
+          
+          # Mover el contenido de dist/ a frontend/
+          mv frontend/dist/* frontend/
+          
+          # Eliminar la carpeta dist vacía
+          rmdir frontend/dist
 
       # ---------- DEPLOY A AZURE ----------
       - name: Login to Azure
