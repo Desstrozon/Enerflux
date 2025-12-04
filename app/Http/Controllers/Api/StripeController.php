@@ -125,16 +125,18 @@ class StripeController extends Controller
         // En local: http://192.168.56.1:8080/checkout/success
         $baseUrl = request()->getSchemeAndHttpHost();
         $isAzure = str_contains($baseUrl, 'azurewebsites.net');
-        
+
         if ($isAzure) {
-            $successUrl = $baseUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl  = $baseUrl . '/frontend/checkout/cancel';
-        } else {
-            // Local: usar FRONTEND_URL si existe
             $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
-            $successUrl = $frontendUrl . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl  = $frontendUrl . '/checkout/cancel';
+            $successUrl = $frontendUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl  = $frontendUrl . '/frontend/checkout/cancel';
         }
+        // } else {
+        //     // Local: usar FRONTEND_URL si existe
+        //     $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
+        //     $successUrl = $frontendUrl . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+        //     $cancelUrl  = $frontendUrl . '/checkout/cancel';
+        // }
 
         // =========================
         //  Customer + dirección
