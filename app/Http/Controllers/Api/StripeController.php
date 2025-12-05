@@ -73,7 +73,7 @@ class StripeController extends Controller
             return response()->json(['message' => 'El carrito está vacío'], 422);
         }
 
-        //  Verificación de stock previa (tal y como ya manejabas)
+        //  Verificación de stock previa 
         foreach ($cart->items as $it) {
             $p = $it->producto;
             if (!$p || ($p->stock ?? 0) <= 0) {
@@ -126,6 +126,8 @@ class StripeController extends Controller
         $isAzure = str_contains($baseUrl, 'azurewebsites.net');
 
         if ($isAzure) {
+            // Forzar HTTPS en Azure
+            $baseUrl = str_replace('http://', 'https://', $baseUrl);
             $successUrl = $baseUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
             $cancelUrl  = $baseUrl . '/frontend/checkout/cancel';
         } else {
@@ -133,9 +135,6 @@ class StripeController extends Controller
             $successUrl = $frontendUrl . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
             $cancelUrl  = $frontendUrl . '/checkout/cancel';
         }
-        
-        // Log para depuración
-        \Log::info('Stripe URLs', ['success' => $successUrl, 'cancel' => $cancelUrl, 'baseUrl' => $baseUrl]);
 
 
         // =========================
@@ -310,7 +309,7 @@ class StripeController extends Controller
                 $userIdFinal = $cart?->user_id ?: ($userId ?: null);
 
                 if ($order) {
-                    // ✅ Ya existía: lo actualizamos
+                    //  Ya existía: lo actualizamos
                     $order->update([
                         'user_id'                  => $userIdFinal,
                         'stripe_payment_intent_id' => $piId,
