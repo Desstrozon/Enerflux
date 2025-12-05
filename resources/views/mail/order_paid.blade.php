@@ -64,19 +64,62 @@
                 apartado <strong>“Mis pedidos”</strong> de Enerflux.
               </p>
 
-              <!-- Botón -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:16px 0 8px;">
+              <!-- Botones de acción -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0 16px; width:100%;">
                 <tr>
-                  <td align="center">
-                    <a href="{{ config('app.url') }}/mis-pedidos"
-                      style="display:inline-block; padding:10px 20px; border-radius:999px;
-                                              background:linear-gradient(135deg,#8b5cf6,#6366f1);
-                                              color:#f9fafb; text-decoration:none; font-size:14px; font-weight:500;">
-                      Ver mis pedidos
+                  <td align="center" style="padding:0 4px;">
+                    <a href="{{ config('app.url') }}/frontend/#/checkout/success?session_id={{ $order->stripe_session_id }}"
+                      style="display:inline-block; padding:12px 24px; border-radius:8px;
+                             background:linear-gradient(135deg,#10b981,#059669);
+                             color:#ffffff; text-decoration:none; font-size:14px; font-weight:600;
+                             box-shadow:0 4px 12px rgba(16,185,129,0.3);">
+                      📄 Ver Factura
+                    </a>
+                  </td>
+                  <td align="center" style="padding:0 4px;">
+                    <a href="{{ config('app.url') }}/frontend/#/mis-pedidos"
+                      style="display:inline-block; padding:12px 24px; border-radius:8px;
+                             background:linear-gradient(135deg,#8b5cf6,#6366f1);
+                             color:#ffffff; text-decoration:none; font-size:14px; font-weight:600;
+                             box-shadow:0 4px 12px rgba(139,92,246,0.3);">
+                      📦 Mis Pedidos
                     </a>
                   </td>
                 </tr>
               </table>
+
+              <!-- Preview de la factura -->
+              <div style="margin:20px 0; padding:16px; background:#020617; border-radius:12px; border:1px solid #1f2937;">
+                <p style="margin:0 0 12px; font-size:13px; color:#9ca3af; font-weight:600;">
+                  📋 RESUMEN DE TU PEDIDO
+                </p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td style="font-size:13px; color:#9ca3af; padding:6px 0;">Pedido #</td>
+                    <td style="font-size:13px; color:#e5e7eb; padding:6px 0; text-align:right; font-weight:600;">
+                      {{ $order->id }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:13px; color:#9ca3af; padding:6px 0;">Fecha de compra</td>
+                    <td style="font-size:13px; color:#e5e7eb; padding:6px 0; text-align:right;">
+                      {{ optional($order->created_at)->format('d/m/Y H:i') }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:13px; color:#9ca3af; padding:6px 0;">Método de pago</td>
+                    <td style="font-size:13px; color:#e5e7eb; padding:6px 0; text-align:right;">
+                      💳 Stripe
+                    </td>
+                  </tr>
+                  <tr style="border-top:1px solid #1f2937;">
+                    <td style="font-size:15px; color:#e5e7eb; padding:12px 0 6px; font-weight:600;">Total pagado</td>
+                    <td style="font-size:18px; color:#10b981; padding:12px 0 6px; text-align:right; font-weight:700;">
+                      {{ number_format($order->amount, 2, ',', '.') }} {{ $order->currency ?? 'EUR' }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
 
               <p style="margin:12px 0 0; font-size:13px; color:#6b7280;">
                 Si detectas cualquier error en la información del pedido o la factura,
