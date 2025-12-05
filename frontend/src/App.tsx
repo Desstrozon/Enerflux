@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SiteLayout from "@/layouts/SiteLayout";
 
@@ -49,18 +49,14 @@ const routerBasename =
     ? "/frontend"
     : "/";  
 
-const App = () => {
-  // Usar HashRouter en Azure para evitar problemas con nginx
-  const Router = window.location.hostname.includes('azurewebsites.net') ? HashRouter : BrowserRouter;
-  
-  return (
-    <PrimeReactProvider value={{ ripple: true }}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <CartProvider>
-            <Router basename={routerBasename}>
+const App = () => (
+  <PrimeReactProvider value={{ ripple: true }}>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <CartProvider>
+          <BrowserRouter basename={routerBasename}>
             <Routes>
               {/* Todo lo de aquí dentro tendrá Navbar (SiteLayout) */}
               <Route element={<SiteLayout />}>
@@ -133,12 +129,11 @@ const App = () => {
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
-          </Router>
+          </BrowserRouter>
         </CartProvider>
       </TooltipProvider>
     </QueryClientProvider>
   </PrimeReactProvider>
-  );
-};
+);
 
 export default App;
