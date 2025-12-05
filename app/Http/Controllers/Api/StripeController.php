@@ -128,8 +128,9 @@ class StripeController extends Controller
         if ($isAzure) {
             // Forzar HTTPS en Azure
             $baseUrl = str_replace('http://', 'https://', $baseUrl);
-            $successUrl = $baseUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl  = $baseUrl . '/frontend/checkout/cancel';
+            // Usar archivo PHP intermedio que redirige a React
+            $successUrl = $baseUrl . '/checkout-redirect.php?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl  = $baseUrl . '/frontend/';
         } else {
             $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
             $successUrl = $frontendUrl . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';

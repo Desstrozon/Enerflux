@@ -37,9 +37,11 @@ Route::get('/frontend/assets/{path}', function ($path) {
 
 // Catch-all para React Router
 Route::get('/frontend/{any?}', function () {
+    \Log::info('Frontend catch-all ejecutado', ['path' => request()->path(), 'url' => request()->fullUrl()]);
     $indexPath = base_path('frontend/index.html');
     if (file_exists($indexPath)) {
         return response()->file($indexPath);
     }
+    \Log::error('Frontend index.html no encontrado', ['path' => $indexPath]);
     abort(404, 'Frontend not found');
 })->where('any', '.*');
