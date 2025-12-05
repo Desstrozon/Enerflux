@@ -6,22 +6,56 @@ import Footer from "@/components/Footer";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ensureScrollTo } from "@/lib/scroll";
-import { alertSuccess } from "@/lib/alerts";
 
 const Index = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Detectar pago exitoso
+  // Detectar pago exitoso o cancelado
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const payment = params.get('payment');
     const sessionId = params.get('session_id');
     
     if (payment === 'success' && sessionId) {
-      alertSuccess('¡Pago completado!', 'Tu pedido ha sido procesado correctamente.');
-      // Limpiar URL
-      navigate('/', { replace: true });
+      // Modal de éxito con opciones
+      import('sweetalert2').then(({ default: Swal }) => {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Pedido Completado!',
+          html: `
+            <p>Tu pago ha sido procesado correctamente.</p>
+            <p class="text-sm text-muted-foreground mt-2">Recibirás un email con los detalles de tu pedido.</p>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Ver Mis Pedidos',
+          cancelButtonText: 'Seguir Comprando',
+          confirmButtonColor: '#10b981',
+          cancelButtonColor: '#6b7280',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/mis-pedidos');
+          } else {
+            navigate('/', { replace: true });
+          }
+        });
+      });
+    } else if (payment === 'cancelled') {
+      // Modal de cancelación
+      import('sweetalert2').then(({ default: Swal }) => {
+        Swal.fire({
+          icon: 'info',
+          title: 'Pago Cancelado',
+          html: `
+            <p>Has cancelado el proceso de pago.</p>
+            <p class="text-sm text-muted-foreground mt-2">Tus productos siguen en el carrito.</p>
+          `,
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#3b82f6',
+        }).then(() => {
+          navigate('/', { replace: true });
+        });
+      });
     }
   }, [location.search, navigate]);
 
