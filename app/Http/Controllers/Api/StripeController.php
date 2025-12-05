@@ -121,19 +121,21 @@ class StripeController extends Controller
         })->values()->all();
 
 
-        $baseUrl = rtrim(env('FRONTEND_URL', request()->getSchemeAndHttpHost()), '/');
+        // Construir URLs de redirección
+        $baseUrl = request()->getSchemeAndHttpHost();
         $isAzure = str_contains($baseUrl, 'azurewebsites.net');
 
         if ($isAzure) {
-            // Producción en Azure
             $successUrl = $baseUrl . '/frontend/checkout/success?session_id={CHECKOUT_SESSION_ID}';
             $cancelUrl  = $baseUrl . '/frontend/checkout/cancel';
         } else {
-            // Local
-            $localFrontend = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
-            $successUrl    = $localFrontend . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
-            $cancelUrl     = $localFrontend . '/checkout/cancel';
+            $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:8080'), '/');
+            $successUrl = $frontendUrl . '/checkout/success?session_id={CHECKOUT_SESSION_ID}';
+            $cancelUrl  = $frontendUrl . '/checkout/cancel';
         }
+        
+        // Log para depuración
+        \Log::info('Stripe URLs', ['success' => $successUrl, 'cancel' => $cancelUrl, 'baseUrl' => $baseUrl]);
 
 
         // =========================
