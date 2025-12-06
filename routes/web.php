@@ -2,10 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect('/frontend/');
-})->name('inicio');
-
+// Rutas protegidas de Laravel (dashboard, etc.)
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -16,6 +13,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
+// Servir archivos de storage
 Route::get('/storage/{path}', function ($path) {
     $file = storage_path('app/public/' . $path);
 
@@ -35,13 +33,12 @@ Route::get('/frontend/assets/{path}', function ($path) {
     abort(404);
 })->where('path', '.*');
 
-// Catch-all para React Router
-Route::get('/frontend/{any?}', function () {
-    \Log::info('Frontend catch-all ejecutado', ['path' => request()->path(), 'url' => request()->fullUrl()]);
+// Catch-all para React Router - DEBE IR AL FINAL
+// Sirve el index.html del frontend para todas las rutas que no sean API o rutas específicas de Laravel
+Route::get('/{any}', function () {
     $indexPath = base_path('frontend/index.html');
     if (file_exists($indexPath)) {
         return response()->file($indexPath);
     }
-    \Log::error('Frontend index.html no encontrado', ['path' => $indexPath]);
     abort(404, 'Frontend not found');
-})->where('any', '.*');
+})->where('any', '^(?!api|storage|dashboard|frontend/assets).*$');
