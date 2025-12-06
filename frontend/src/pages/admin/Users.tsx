@@ -441,21 +441,12 @@ export default function UsersAdmin() {
               </div>
 
               <div className="grid gap-2">
-                <label className="text-sm font-medium">Rol</label>
-                <select
-                  className="w-full border rounded p-2 bg-background capitalize"
+                <label className="text-sm font-medium">Rol (no editable)</label>
+                <Input
                   value={editForm.rol}
-                  onChange={(e) =>
-                    setEditForm((f) => ({ ...f, rol: e.target.value }))
-                  }
-                  required
-                >
-                  {roles.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-                </select>
+                  disabled
+                  className="capitalize bg-muted cursor-not-allowed"
+                />
               </div>
 
               <div className="grid gap-2">

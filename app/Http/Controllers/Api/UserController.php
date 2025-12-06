@@ -227,10 +227,10 @@ class UserController extends Controller
             'password' => ['nullable', 'string', 'min:6'],
         ];
 
-        // solo admin puede cambiar rol
-        if ($isAdmin) {
-            $rules['rol'] = ['sometimes', 'string', Rule::in(['admin', 'administrador', 'vendedor', 'cliente'])];
-        }
+        // NO permitimos cambiar el rol (comentado para evitar problemas)
+        // if ($isAdmin) {
+        //     $rules['rol'] = ['sometimes', 'string', Rule::in(['admin', 'administrador', 'vendedor', 'cliente'])];
+        // }
 
         //  CAMPOS DE PERFIL (cliente + vendedor)
         $rules += [
@@ -252,25 +252,14 @@ class UserController extends Controller
 
         $data = $request->validate($rules);
 
-        // === user básico (igual que antes) ===
-        $rolAnterior = $user->rol; // Guardar el rol anterior
-        
+        // === user básico (sin cambiar rol) ===
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
         }
         if (isset($data['name']))  $user->name  = $data['name'];
         if (isset($data['email'])) $user->email = $data['email'];
-        if ($isAdmin && isset($data['rol'])) $user->rol = strtolower($data['rol']);
+        // NO cambiamos el rol
         $user->save();
-
-        // === Si cambió el rol, eliminar el perfil anterior ===
-        if ($isAdmin && isset($data['rol']) && $rolAnterior !== $user->rol) {
-            if ($rolAnterior === 'vendedor') {
-                $user->perfilVendedor()?->delete();
-            } elseif ($rolAnterior === 'cliente') {
-                $user->perfilCliente()?->delete();
-            }
-        }
 
         // === perfiles (aquí añadimos campos nuevos) ===
         if ($user->rol === 'vendedor') {
