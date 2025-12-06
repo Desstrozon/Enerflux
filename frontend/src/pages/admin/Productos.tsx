@@ -351,16 +351,7 @@ export default function ProductosAdmin() {
                   <Input placeholder="Modelo del inversor" value={form.modelo_inversor || ""} onChange={(e) => setForm({ ...form, modelo_inversor: e.target.value })} />
                   <Input type="number" step="0.01" placeholder="Potencia nominal (kW)" value={form.potencia_nominal ?? ""} onChange={(e) => setForm({ ...form, potencia_nominal: e.target.value === "" ? "" : parseFloat(e.target.value) })} />
                   <Input type="number" step="0.01" placeholder="Eficiencia (%)" value={form.eficiencia_inversor ?? ""} onChange={(e) => setForm({ ...form, eficiencia_inversor: e.target.value === "" ? "" : parseFloat(e.target.value) })} />
-                  <select 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    value={form.tipo_inversor || ""} 
-                    onChange={(e) => setForm({ ...form, tipo_inversor: e.target.value })}
-                  >
-                    <option value="">Seleccionar tipo</option>
-                    <option value="on-grid">On-grid</option>
-                    <option value="off-grid">Off-grid</option>
-                    <option value="hibrido">Híbrido</option>
-                  </select>
+                  <Input placeholder="Tipo (on-grid/off-grid/hibrido)" value={form.tipo_inversor || ""} onChange={(e) => setForm({ ...form, tipo_inversor: e.target.value })} />
                 </div>
               )}
 
