@@ -89,7 +89,6 @@ export default function ProductosAdmin() {
       modelo_bateria: "",
       capacidad: "",
       autonomia: "",
-      // inversores
       modelo_inversor: "",
       potencia_nominal: "",
       eficiencia_inversor: "",
