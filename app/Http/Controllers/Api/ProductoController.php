@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 //  AÑADIR ESTOS IMPORTS
 use App\Models\Panel;
 use App\Models\Bateria;
+use App\Models\Inversor;
 
 class ProductoController extends Controller
 {
@@ -72,7 +73,7 @@ class ProductoController extends Controller
             ->withAvg('productReviews as avg_rating', 'rating')
             
             //  CARGAR SIEMPRE CARACTERÍSTICAS
-            ->with(['panel', 'bateria'])
+            ->with(['panel', 'bateria', 'inversor'])
             ->orderBy('id_producto', 'desc')
             ->get();
 
@@ -100,7 +101,7 @@ class ProductoController extends Controller
             ->withCount(['productReviews as reviews_count'])
             ->withAvg('productReviews as avg_rating', 'rating')
             //  CARGAR SIEMPRE CARACTERÍSTICAS
-            ->with(['panel', 'bateria'])
+            ->with(['panel', 'bateria', 'inversor'])
             ->firstOrFail();
 
         $producto->galeria = $this->listGallery($producto->id_producto);
@@ -174,9 +175,20 @@ class ProductoController extends Controller
                     'autonomia'   => $batData['autonomia'] ?? 0,
                 ]);
             }
+        } elseif ($producto->categoria === 'inversor') {
+            $invData = $request->only(['modelo_inversor', 'potencia_nominal', 'eficiencia_inversor', 'tipo_inversor']);
+            if (!empty($invData['modelo_inversor']) || isset($invData['potencia_nominal']) || isset($invData['eficiencia_inversor']) || isset($invData['tipo_inversor'])) {
+                Inversor::create([
+                    'id_producto'      => $producto->id_producto,
+                    'modelo'           => $invData['modelo_inversor'] ?? null,
+                    'potencia_nominal' => $invData['potencia_nominal'] ?? 0,
+                    'eficiencia'       => $invData['eficiencia_inversor'] ?? 0,
+                    'tipo'             => $invData['tipo_inversor'] ?? null,
+                ]);
+            }
         }
 
-        return response()->json($producto->load(['panel', 'bateria']), 201);
+        return response()->json($producto->load(['panel', 'bateria', 'inversor']), 201);
     }
 
     // PUT /api/productos/{producto}
@@ -201,6 +213,10 @@ class ProductoController extends Controller
             'modelo_bateria' => 'nullable|string|max:100',
             'capacidad'      => 'nullable|numeric',
             'autonomia'      => 'nullable|numeric',
+            'modelo_inversor'     => 'nullable|string|max:100',
+            'potencia_nominal'    => 'nullable|numeric',
+            'eficiencia_inversor' => 'nullable|numeric',
+            'tipo_inversor'       => 'nullable|string|max:10',
         ]);
 
         // vendor no reasigna vendedor
@@ -237,6 +253,7 @@ class ProductoController extends Controller
             // Si cambió de otra categoría a panel, limpia batería previa
             if ($categoriaAnterior !== 'panel') {
                 $producto->bateria()?->delete();
+                $producto->inversor()?->delete();
             }
         } elseif ($producto->categoria === 'bateria') {
             $batData = $request->only(['modelo_bateria', 'capacidad', 'autonomia']);
@@ -251,12 +268,30 @@ class ProductoController extends Controller
             // Si cambió de otra categoría a batería, limpia panel previo
             if ($categoriaAnterior !== 'bateria') {
                 $producto->panel()?->delete();
+                $producto->inversor()?->delete();
+            }
+        } elseif ($producto->categoria === 'inversor') {
+            $invData = $request->only(['modelo_inversor', 'potencia_nominal', 'eficiencia_inversor', 'tipo_inversor']);
+            if (!empty($invData['modelo_inversor']) || isset($invData['potencia_nominal']) || isset($invData['eficiencia_inversor']) || isset($invData['tipo_inversor'])) {
+                $inv = $producto->inversor()->first();
+                if (!$inv) $inv = new Inversor(['id_producto' => $producto->id_producto]);
+                if (!empty($invData['modelo_inversor']))      $inv->modelo = $invData['modelo_inversor'];
+                if (isset($invData['potencia_nominal']))      $inv->potencia_nominal = $invData['potencia_nominal'];
+                if (isset($invData['eficiencia_inversor']))   $inv->eficiencia = $invData['eficiencia_inversor'];
+                if (isset($invData['tipo_inversor']))         $inv->tipo = $invData['tipo_inversor'];
+                $inv->save();
+            }
+            // Si cambió de otra categoría a inversor, limpia previos
+            if ($categoriaAnterior !== 'inversor') {
+                $producto->panel()?->delete();
+                $producto->bateria()?->delete();
             }
         } else {
             // Si cambió a otra categoría distinta, limpia restos
             if ($request->filled('categoria') && $request->input('categoria') !== $categoriaAnterior) {
                 $producto->panel()?->delete();
                 $producto->bateria()?->delete();
+                $producto->inversor()?->delete();
             }
         }
         // === GALERÍA (update) ===
@@ -285,11 +320,12 @@ class ProductoController extends Controller
         $producto = $producto->fresh();
         $producto->panel = isset($producto->panel) ? $producto->panel : null; // no toco tu lógica
         $producto->bateria = isset($producto->bateria) ? $producto->bateria : null;
+        $producto->inversor = isset($producto->inversor) ? $producto->inversor : null;
         $producto->galeria = $this->listGallery($producto->id_producto);
         return response()->json($producto);
 
 
-        return response()->json($producto->load(['panel', 'bateria']));
+        return response()->json($producto->load(['panel', 'bateria', 'inversor']));
     }
 
     // DELETE /api/productos/{producto}
@@ -312,6 +348,7 @@ class ProductoController extends Controller
             // Por si acaso (limpieza explícita)
             $producto->panel()?->delete();
             $producto->bateria()?->delete();
+            $producto->inversor()?->delete();
 
             $producto->delete();
         });

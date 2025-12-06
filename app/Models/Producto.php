@@ -45,6 +45,12 @@ class Producto extends Model
     {
         return $this->hasOne(Bateria::class, 'id_producto', 'id_producto');
     }
+
+    public function inversor()
+    {
+        return $this->hasOne(Inversor::class, 'id_producto', 'id_producto');
+    }
+
     public function images()
     {
         return $this->hasMany(\App\Models\ProductImage::class, 'producto_id', 'id_producto')
