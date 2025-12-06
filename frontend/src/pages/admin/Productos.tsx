@@ -89,6 +89,11 @@ export default function ProductosAdmin() {
       modelo_bateria: "",
       capacidad: "",
       autonomia: "",
+      // inversores
+      modelo_inversor: "",
+      potencia_nominal: "",
+      eficiencia_inversor: "",
+      tipo_inversor: "",
       // galería
       galeriaActual: [] as string[],
       galeriaFiles: [] as File[],
@@ -110,6 +115,20 @@ export default function ProductosAdmin() {
         precio_base: full.precio_base ?? "",
         stock: full.stock ?? "",
         id_vendedor: full.id_vendedor ?? "",
+        // características panel
+        modelo_panel: (full as any).panel?.modelo || "",
+        eficiencia: (full as any).panel?.eficiencia || "",
+        superficie: (full as any).panel?.superficie || "",
+        produccion: (full as any).panel?.produccion || "",
+        // características batería
+        modelo_bateria: (full as any).bateria?.modelo || "",
+        capacidad: (full as any).bateria?.capacidad || "",
+        autonomia: (full as any).bateria?.autonomia || "",
+        // características inversor
+        modelo_inversor: (full as any).inversor?.modelo || "",
+        potencia_nominal: (full as any).inversor?.potencia_nominal || "",
+        eficiencia_inversor: (full as any).inversor?.eficiencia || "",
+        tipo_inversor: (full as any).inversor?.tipo || "",
         // galería existente (acepta full.galeria o full.images)
         galeriaActual: Array.isArray(full.galeria)
           ? full.galeria
@@ -150,6 +169,12 @@ export default function ProductosAdmin() {
         if (form.modelo_bateria) fd.append("modelo_bateria", form.modelo_bateria);
         if (form.capacidad != null) fd.append("capacidad", String(form.capacidad));
         if (form.autonomia != null) fd.append("autonomia", String(form.autonomia));
+      }
+      if (form.categoria === "inversor") {
+        if (form.modelo_inversor) fd.append("modelo_inversor", form.modelo_inversor);
+        if (form.potencia_nominal != null) fd.append("potencia_nominal", String(form.potencia_nominal));
+        if (form.eficiencia_inversor != null) fd.append("eficiencia_inversor", String(form.eficiencia_inversor));
+        if (form.tipo_inversor) fd.append("tipo_inversor", form.tipo_inversor);
       }
 
       // ▼▼ GALERÍA ▼▼
@@ -301,7 +326,7 @@ export default function ProductosAdmin() {
                 </select>
               </div>
 
-              {/* características (igual que tenías) */}
+              {/* características */}
               {form.categoria === "panel" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border rounded p-3">
                   <div className="md:col-span-2 font-medium text-sm">Características del panel</div>
@@ -318,6 +343,25 @@ export default function ProductosAdmin() {
                   <Input placeholder="Modelo de la batería" value={form.modelo_bateria || ""} onChange={(e) => setForm({ ...form, modelo_bateria: e.target.value })} />
                   <Input type="number" step="0.01" placeholder="Capacidad (kWh)" value={form.capacidad ?? ""} onChange={(e) => setForm({ ...form, capacidad: e.target.value === "" ? "" : parseFloat(e.target.value) })} />
                   <Input type="number" step="0.01" placeholder="Autonomía (h)" value={form.autonomia ?? ""} onChange={(e) => setForm({ ...form, autonomia: e.target.value === "" ? "" : parseFloat(e.target.value) })} />
+                </div>
+              )}
+
+              {form.categoria === "inversor" && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border rounded p-3">
+                  <div className="md:col-span-2 font-medium text-sm">Características del inversor</div>
+                  <Input placeholder="Modelo del inversor" value={form.modelo_inversor || ""} onChange={(e) => setForm({ ...form, modelo_inversor: e.target.value })} />
+                  <Input type="number" step="0.01" placeholder="Potencia nominal (kW)" value={form.potencia_nominal ?? ""} onChange={(e) => setForm({ ...form, potencia_nominal: e.target.value === "" ? "" : parseFloat(e.target.value) })} />
+                  <Input type="number" step="0.01" placeholder="Eficiencia (%)" value={form.eficiencia_inversor ?? ""} onChange={(e) => setForm({ ...form, eficiencia_inversor: e.target.value === "" ? "" : parseFloat(e.target.value) })} />
+                  <select 
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    value={form.tipo_inversor || ""} 
+                    onChange={(e) => setForm({ ...form, tipo_inversor: e.target.value })}
+                  >
+                    <option value="">Seleccionar tipo</option>
+                    <option value="on-grid">On-grid</option>
+                    <option value="off-grid">Off-grid</option>
+                    <option value="hibrido">Híbrido</option>
+                  </select>
                 </div>
               )}
 

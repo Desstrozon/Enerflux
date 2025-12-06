@@ -25,6 +25,13 @@ type BateriaInfo = {
   autonomia?: number | null;
 };
 
+type InversorInfo = {
+  modelo?: string | null;
+  potencia_nominal?: number | null;
+  eficiencia?: number | null;
+  tipo?: string | null;
+};
+
 type ProductoImage = { id?: number; path?: string; url?: string };
 
 type Producto = {
@@ -38,6 +45,7 @@ type Producto = {
   // relaciones
   panel?: PanelInfo | null;
   bateria?: BateriaInfo | null;
+  inversor?: InversorInfo | null;
   // posibles galerías que envíe el backend
   galeria?: string[] | null;
   images?: ProductoImage[] | null;
@@ -304,6 +312,20 @@ export default function ProductDetail() {
                     <div>Modelo: <span className="text-foreground/80">{p.bateria?.modelo ?? "—"}</span></div>
                     <div>Capacidad: <span className="text-foreground/80">{p.bateria?.capacidad ?? "—"} kWh</span></div>
                     <div>Autonomía: <span className="text-foreground/80">{p.bateria?.autonomia ?? "—"} h</span></div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {(p.categoria === "inversor" && p.inversor) && (
+              <Card className="mt-6">
+                <CardContent className="p-4">
+                  <div className="font-medium mb-2">Ficha técnica (Inversor)</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                    <div>Modelo: <span className="text-foreground/80">{p.inversor?.modelo ?? "—"}</span></div>
+                    <div>Potencia nominal: <span className="text-foreground/80">{p.inversor?.potencia_nominal ?? "—"} kW</span></div>
+                    <div>Eficiencia: <span className="text-foreground/80">{p.inversor?.eficiencia ?? "—"} %</span></div>
+                    <div>Tipo: <span className="text-foreground/80">{p.inversor?.tipo ?? "—"}</span></div>
                   </div>
                 </CardContent>
               </Card>
