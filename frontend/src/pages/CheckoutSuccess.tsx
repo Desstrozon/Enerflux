@@ -135,8 +135,8 @@ export default function CheckoutSuccess() {
   })();
 
   return (
-    <main className="container max-w-3xl mx-auto py-16">
-      <h1 className="text-3xl font-bold mb-2">Pago completado</h1>
+    <main className="container max-w-3xl mx-auto py-8 px-4 sm:py-16">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-2">Pago completado</h1>
 
       {phase === "fetching" || phase === "processing" ? (
         <>
@@ -152,7 +152,7 @@ export default function CheckoutSuccess() {
           <p className="text-muted-foreground mb-6">
             No hemos podido encontrar el pedido todavía.
           </p>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button onClick={() => navigate("/")}>Seguir comprando</Button>
             <Button variant="outline" onClick={() => navigate("/mis-pedidos")}>
               Ver mis pedidos
@@ -165,21 +165,36 @@ export default function CheckoutSuccess() {
             ¡Gracias! Tu pedido #{order?.id} está confirmado.
           </p>
 
-          <div className="rounded-xl border p-4 mb-6 bg-white text-black dark:bg-neutral-900 dark:text-neutral-100">
-            <div className="flex justify-between">
-              <span>Estado</span>
-              <span className="font-medium">{order?.status}</span>
+          <div className="rounded-xl border p-4 sm:p-6 mb-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Estado del pedido</p>
+                <p className="text-lg font-semibold text-green-700 dark:text-green-400">
+                  {order?.status === 'paid' ? 'Pagado' : order?.status}
+                </p>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Total</span>
-              <span className="font-medium">{formattedTotal}</span>
+            <div className="border-t pt-4 mt-4">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-sm sm:text-base text-muted-foreground">Total pagado</span>
+                <span className="text-xl sm:text-2xl font-bold text-green-700 dark:text-green-400">
+                  {formattedTotal}
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="flex gap-3 mb-6">
-            <Button onClick={() => navigate("/mis-pedidos")}>Ver mis pedidos</Button>
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <Button onClick={() => navigate("/mis-pedidos")} className="w-full sm:w-auto">
+              Ver mis pedidos
+            </Button>
             {order && (
-              <Button variant="outline" onClick={handleDownloadPdf}>
+              <Button variant="outline" onClick={handleDownloadPdf} className="w-full sm:w-auto">
                 Descargar PDF
               </Button>
             )}
