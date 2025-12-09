@@ -28,17 +28,15 @@ class NewVendorRequest extends Notification implements ShouldQueue
         $this->vendor->loadMissing('perfilVendedor');
         $perfil = $this->vendor->perfilVendedor;
 
-        return (new MailMessage)
-            ->subject('Nueva solicitud de vendedor - Enerflux')
-            ->view('mail.vendor_request_admin', [
-                'user' => $this->vendor,
-                'telefono' => $perfil->telefono ?? '—',
-                'zona' => $perfil->zona ?? '—',
-                'brand' => $perfil->brand ?? '—',
-                'company' => $perfil->company ?? '—',
-                'website' => $perfil->website ?? '—',
-                'message' => $perfil->message ?? null,
-            ]);
+        return (new \App\Mail\VendorRequestMail(
+            $this->vendor,
+            $perfil->telefono ?? '—',
+            $perfil->zona ?? '—',
+            $perfil->brand ?? '—',
+            $perfil->company ?? '—',
+            $perfil->website ?? '—',
+            $perfil->message ?? null
+        ));
     }
 
 
