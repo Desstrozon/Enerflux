@@ -48,9 +48,22 @@
 
         <p style="margin-top:24px; font-size:13px; color:#4b5563;">
             Este estudio es orientativo y no supone una oferta comercial vinculante.
-            Si quieres que un técnico revise tu caso en detalle, responde directamente a este correo
-            o contacta con nosotros a través de la web.
+            Si quieres que un técnico revise tu caso en detalle, puedes contactarnos.
         </p>
+
+        <!-- Botón -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0 16px;">
+            <tr>
+                <td align="center">
+                    <a href="{{ rtrim(config('app.url'), '/') }}/frontend/contacto"
+                       style="display:inline-block; padding:12px 28px; border-radius:8px;
+                              background:linear-gradient(135deg,#8b5cf6,#6366f1);
+                              color:#ffffff; text-decoration:none; font-size:14px; font-weight:600;">
+                        Contactar con un técnico
+                    </a>
+                </td>
+            </tr>
+        </table>
 
         <p style="margin-top:16px;">
             Un saludo,<br>

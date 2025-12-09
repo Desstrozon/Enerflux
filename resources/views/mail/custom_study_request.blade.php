@@ -38,6 +38,20 @@
             y comparar paneles, inversores y baterías disponibles.
         </p>
 
+        <!-- Botón -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:24px 0 16px;">
+            <tr>
+                <td align="center">
+                    <a href="{{ rtrim(config('app.url'), '/') }}/frontend"
+                       style="display:inline-block; padding:12px 28px; border-radius:8px;
+                              background:linear-gradient(135deg,#8b5cf6,#6366f1);
+                              color:#ffffff; text-decoration:none; font-size:14px; font-weight:600;">
+                        Ver productos en la web
+                    </a>
+                </td>
+            </tr>
+        </table>
+
         <p style="margin-top:24px;color:#6b7280;font-size:13px;">
             Gracias por confiar en Enerflux.
             <br>
