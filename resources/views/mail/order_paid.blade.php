@@ -37,21 +37,7 @@
                 </tr>
               </table>
 
-              <p style="margin:16px 0 12px; font-size:14px; color:#9ca3af;">Puedes ver el detalle completo de tu pedido y descargar la factura desde tu cuenta.</p>
-
-              <!-- Botón -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:16px 0 12px;">
-                <tr>
-                  <td align="center">
-                    <a href="{{ rtrim(config('app.url'), '/') }}/frontend/mis-pedidos"
-                       style="display:inline-block; padding:12px 28px; border-radius:8px;
-                              background:linear-gradient(135deg,#8b5cf6,#6366f1);
-                              color:#ffffff; text-decoration:none; font-size:14px; font-weight:600;">
-                        Ver mis pedidos
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              <p style="margin:16px 0 12px; font-size:14px; color:#9ca3af;">Si desea ver la factura, vaya al apartado <strong>"Mis pedidos"</strong> en Enerflux y haga clic en el botón <strong>"Ver"</strong> o <strong>"Descargar PDF"</strong> para descargarla.</p>
 
               <p style="margin:12px 0 0; font-size:13px; color:#6b7280;">Si detectas cualquier error en la información del pedido o la factura, puedes responder directamente a este correo o escribirnos a <a href="mailto:{{ config('mail.from.address') }}" style="color:#a855f7; text-decoration:none;">{{ config('mail.from.address') }}</a>.</p>
             </td>

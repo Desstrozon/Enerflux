@@ -55,10 +55,10 @@
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:16px 0 8px;">
                             <tr>
                                 <td align="center">
-                                    <a href="{{ rtrim(config('app.url'), '/') }}/frontend/login"
-                                       style="display:inline-block; padding:12px 28px; border-radius:8px;
+                                    <a href="{{ config('app.url') }}/login"
+                                       style="display:inline-block; padding:10px 22px; border-radius:999px;
                                               background:linear-gradient(135deg,#8b5cf6,#6366f1);
-                                              color:#ffffff; text-decoration:none; font-size:14px; font-weight:600;">
+                                              color:#f9fafb; text-decoration:none; font-size:14px; font-weight:500;">
                                         Iniciar sesión como vendedor
                                     </a>
                                 </td>
