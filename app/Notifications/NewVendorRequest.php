@@ -22,32 +22,23 @@ class NewVendorRequest extends Notification implements ShouldQueue
     }
 
     /** Contenido del email */
-      public function toMail($notifiable)
+    public function toMail($notifiable)
     {
         // Cargamos perfil
         $this->vendor->loadMissing('perfilVendedor');
         $perfil = $this->vendor->perfilVendedor;
 
-        $mail = (new MailMessage)
-            ->subject('Nueva solicitud de vendedor')
-            ->greeting('Hola, administrador/a')
-            ->line("{$this->vendor->name} ({$this->vendor->email}) ha solicitado ser vendedor.")
-            ->line('Datos del vendedor:')
-            ->line('Teléfono: ' . ($perfil->telefono ?? '—'))
-            ->line('Zona: ' . ($perfil->zona ?? '—'))
-            ->line('Marca: ' . ($perfil->brand ?? '—'))
-            ->line('Empresa: ' . ($perfil->company ?? '—'))
-            ->line('Web: ' . ($perfil->website ?? '—'));
-
-        if (!empty($perfil?->message)) {
-            $mail->line('Mensaje:')
-                 ->line($perfil->message);
-        }
-
-        // puedes cambiar esta URL al front si quieres
-        $mail->action('Revisar solicitudes', url('/admin/vendors/requests'));
-
-        return $mail;
+        return (new MailMessage)
+            ->subject('Nueva solicitud de vendedor - Enerflux')
+            ->view('mail.vendor_request_admin', [
+                'user' => $this->vendor,
+                'telefono' => $perfil->telefono ?? '—',
+                'zona' => $perfil->zona ?? '—',
+                'brand' => $perfil->brand ?? '—',
+                'company' => $perfil->company ?? '—',
+                'website' => $perfil->website ?? '—',
+                'message' => $perfil->message ?? null,
+            ]);
     }
 
 
