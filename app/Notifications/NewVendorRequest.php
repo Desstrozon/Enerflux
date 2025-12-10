@@ -24,29 +24,18 @@ class NewVendorRequest extends Notification implements ShouldQueue
     /** Contenido del email */
     public function toMail($notifiable)
     {
-        // Cargamos perfil
         $this->vendor->loadMissing('perfilVendedor');
         $perfil = $this->vendor->perfilVendedor;
 
-        $mail = (new MailMessage)
-            ->subject('Nueva solicitud de vendedor')
-            ->greeting('Hola, administrador/a')
-            ->line("{$this->vendor->name} ({$this->vendor->email}) ha solicitado ser vendedor.")
-            ->line('Datos del vendedor:')
-            ->line('Teléfono: ' . ($perfil->telefono ?? '—'))
-            ->line('Zona: ' . ($perfil->zona ?? '—'))
-            ->line('Marca: ' . ($perfil->brand ?? '—'))
-            ->line('Empresa: ' . ($perfil->company ?? '—'))
-            ->line('Web: ' . ($perfil->website ?? '—'));
-
-        if (!empty($perfil?->message)) {
-            $mail->line('Mensaje:')
-                 ->line($perfil->message);
-        }
-
-        $mail->action('Revisar solicitudes', rtrim(config('app.url'), '/') . '/frontend/vendors/requests');
-
-        return $mail;
+        return new \App\Mail\VendorRequestMail(
+            $this->vendor,
+            $perfil->telefono ?? '—',
+            $perfil->zona ?? '—',
+            $perfil->brand ?? '—',
+            $perfil->company ?? '—',
+            $perfil->website ?? '—',
+            $perfil->message ?? null
+        );
     }
 
 

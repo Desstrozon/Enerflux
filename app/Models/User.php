@@ -89,8 +89,6 @@ class User extends Authenticatable
         // si solo quieres 1 activo:
         return $this->hasOne(\App\Models\Cart::class)->where('status', 'active');
     }
-    // si quieres poder acceder a históricos:
-    // public function carts() { return $this->hasMany(Cart::class); }
 
     public function productReviews()
     {

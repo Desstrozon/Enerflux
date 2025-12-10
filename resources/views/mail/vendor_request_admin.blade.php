@@ -41,17 +41,25 @@
                             </p>
 
                             <p style="margin:0; font-size:13px; color:#9ca3af; line-height:1.8;">
-                                <strong>Nombre:</strong> {{ $user->name }}<br>
+                                <strong>Nombre:</strong> {{ e($user->name) }}<br>
                                 <strong>Email:</strong>
-                                <a href="mailto:{{ $user->email }}" style="color:#a855f7; text-decoration:none;">
-                                    {{ $user->email }}
+                                <a href="mailto:{{ e($user->email) }}" style="color:#a855f7; text-decoration:none;">
+                                    {{ e($user->email) }}
                                 </a><br>
                                 <strong>ID Usuario:</strong> #{{ $user->id }}<br>
-                                <strong>Teléfono:</strong> {{ $telefono }}<br>
-                                <strong>Zona:</strong> {{ $zona }}<br>
-                                <strong>Marca:</strong> {{ $brand }}<br>
-                                <strong>Empresa:</strong> {{ $company }}<br>
-                                <strong>Web:</strong> {{ $website }}<br>
+                                <strong>Teléfono:</strong> {{ e($telefono) }}<br>
+                                <strong>Zona:</strong> {{ e($zona) }}<br>
+                                <strong>Marca:</strong> {{ e($brand) }}<br>
+                                <strong>Empresa:</strong> {{ e($company) }}<br>
+                                <strong>Web:</strong> 
+                                @if($website && $website !== '—')
+                                    <a href="{{ e($website) }}" style="color:#a855f7; text-decoration:none;" target="_blank" rel="noopener noreferrer">
+                                        {{ e($website) }}
+                                    </a>
+                                @else
+                                    {{ e($website) }}
+                                @endif
+                                <br>
                                 <strong>Fecha solicitud:</strong> {{ now()->format('d/m/Y H:i') }}
                             </p>
                         </div>

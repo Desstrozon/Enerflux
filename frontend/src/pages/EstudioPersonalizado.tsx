@@ -150,9 +150,9 @@ export default function EstudioPersonalizado() {
                   <p>☀️ La radiación solar específica de tu ubicación.</p>
                   <p>⚡ Cómo se comporta tu sistema bajo condiciones reales.</p>
                   <p>💾 Tu historial de consumo eléctrico.</p>
-                  <p>🔋 Si puedes usar baterías para maximizar autoconsumo.</p>
+                  <p>Si puedes usar baterías para maximizar autoconsumo.</p>
                   <p className="pt-2 border-t border-border/40 italic text-xs">
-                    Porque tu energía merece precisión. 💡
+                    Porque tu energía merece precisión.
                   </p>
                 </div>
               </CardContent>
@@ -176,9 +176,9 @@ export default function EstudioPersonalizado() {
                     <p className="font-medium text-foreground mb-2">
                       En 48 horas, recibes un informe claro:
                     </p>
-                    <p>✅ Cuánto puedes ahorrar al año.</p>
-                    <p>✅ Qué sistema realmente necesitas.</p>
-                    <p>✅ Cuándo recuperas tu inversión.</p>
+                    <p>• Cuánto puedes ahorrar al año.</p>
+                    <p>• Qué sistema realmente necesitas.</p>
+                    <p>• Cuándo recuperas tu inversión.</p>
                   </div>
 
                   <p className="mt-3 pt-3 border-t border-border/40 italic">
