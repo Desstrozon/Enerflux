@@ -36,9 +36,12 @@ export default function VendedoresAdmin() {
     try {
       const users = await apiGet<any[]>("/users");
       
-      // Filtrar solo vendedores que NO están bloqueados
+      // Filtrar solo vendedores aprobados (no bloqueados, no rechazados, no pendientes)
       const vendedores = users.filter((u: any) => 
-        u.rol === 'vendedor' && !u.blocked && u.vendor_status !== 'rejected'
+        u.rol === 'vendedor' && 
+        !u.blocked && 
+        u.vendor_status !== 'rejected' &&
+        u.vendor_status !== 'pending'
       );
       
       setData(vendedores);

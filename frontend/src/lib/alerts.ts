@@ -14,8 +14,10 @@ const modalBase = {
   buttonsStyling: false,
   showConfirmButton: true,
   confirmButtonText: "Aceptar",
+  heightAuto: false,
   customClass: {
-    popup: "rounded-2xl border shadow-xl !z-[10000]",
+    container: "!z-[99999]",
+    popup: "rounded-2xl border shadow-xl",
     title: "text-xl font-semibold",
     htmlContainer: "text-sm text-muted-foreground",
     confirmButton:

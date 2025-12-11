@@ -373,12 +373,19 @@ All colors MUST be HSL.
   }
 }
 
-/* Fix z-index para SweetAlert2 sobre modales */
+/* Fix z-index para SweetAlert2 sobre modales de shadcn/ui */
+/* Los modales de shadcn/ui usan z-50 (z-index: 50) */
+/* SweetAlert2 necesita estar por encima */
 .swal2-container {
-  z-index: 10000 !important;
+  z-index: 99999 !important;
 }
 
 .swal2-popup {
-  z-index: 10001 !important;
+  z-index: 100000 !important;
+}
+
+/* Asegurar que el backdrop de SweetAlert también esté por encima */
+.swal2-backdrop-show {
+  z-index: 99998 !important;
 }
 
