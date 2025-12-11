@@ -373,3 +373,12 @@ All colors MUST be HSL.
   }
 }
 
+/* Fix z-index para SweetAlert2 sobre modales */
+.swal2-container {
+  z-index: 10000 !important;
+}
+
+.swal2-popup {
+  z-index: 10001 !important;
+}
+

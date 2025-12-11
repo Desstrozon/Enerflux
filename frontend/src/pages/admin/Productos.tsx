@@ -51,12 +51,15 @@ export default function ProductosAdmin() {
     }
   };
 
-  // carga rápida de vendedores (intenta /users y filtra por rol vendedor NO bloqueados)
+  // carga rápida de vendedores (intenta /users y filtra por rol vendedor NO bloqueados y aprobados)
   const loadVendors = async () => {
     try {
       const all = await apiGet<any[]>("/users");
       const onlyVendors = (all || []).filter(
-        (u) => String(u.rol || "").toLowerCase() === "vendedor" && !u.blocked && u.vendor_status !== 'rejected'
+        (u) => String(u.rol || "").toLowerCase() === "vendedor" && 
+               !u.blocked && 
+               u.vendor_status !== 'rejected' &&
+               u.vendor_status !== 'pending'
       );
       setVendors(onlyVendors);
     } catch {

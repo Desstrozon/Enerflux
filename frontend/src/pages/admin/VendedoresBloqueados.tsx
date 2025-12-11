@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { apiGet } from "@/lib/http";
+import { apiGet, apiDelete } from "@/lib/http";
 import {
   Table,
   TableHeader,
@@ -10,8 +10,10 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import BackButton from "@/components/BackButton";
+import { confirm, alertSuccess, alertError } from "@/lib/alerts";
 
 type VendedorBloqueado = {
   id: number;
@@ -27,6 +29,7 @@ type VendedorBloqueado = {
 export default function VendedoresBloqueados() {
   const [data, setData] = useState<VendedorBloqueado[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [q, setQ] = useState("");
   const navigate = useNavigate();
 
@@ -59,6 +62,27 @@ export default function VendedoresBloqueados() {
   useEffect(() => {
     load();
   }, []);
+
+  const handleDelete = async (u: VendedorBloqueado) => {
+    const ok = await confirm(
+      "Eliminar vendedor",
+      `¿Seguro que quieres eliminar a "${u.name}"? Esta acción no se puede deshacer.`,
+      "Eliminar"
+    );
+    if (!ok) return;
+
+    try {
+      setDeletingId(u.id);
+      await apiDelete(`/users/${u.id}`);
+      await alertSuccess("Vendedor eliminado.");
+      await load();
+    } catch (e: any) {
+      console.error(e);
+      await alertError(e?.message || "No se pudo eliminar el vendedor.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const filtered = data.filter((u) => {
     const term = q.trim().toLowerCase();
@@ -106,6 +130,7 @@ export default function VendedoresBloqueados() {
             <TableHead>Teléfono</TableHead>
             <TableHead>Zona</TableHead>
             <TableHead>Marca</TableHead>
+            <TableHead className="text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -121,12 +146,22 @@ export default function VendedoresBloqueados() {
               <TableCell>{u.telefono ?? "—"}</TableCell>
               <TableCell>{u.zona ?? "—"}</TableCell>
               <TableCell>{u.brand ?? "—"}</TableCell>
+              <TableCell className="text-right">
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => handleDelete(u)}
+                  disabled={deletingId === u.id}
+                >
+                  {deletingId === u.id ? "Eliminando…" : "Eliminar"}
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
           {filtered.length === 0 && (
             <TableRow>
               <TableCell
-                colSpan={7}
+                colSpan={8}
                 className="text-center text-sm text-muted-foreground"
               >
                 Sin resultados.
