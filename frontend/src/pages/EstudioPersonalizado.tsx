@@ -56,7 +56,7 @@ export default function EstudioPersonalizado() {
       <div className="pointer-events-none absolute -top-32 -left-32 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-secondary/25 blur-3xl" />
 
-      <main className="relative z-10 container mx-auto px-4 pt-24 pb-10 md:py-16 lg:py-24">
+      <main className="relative z-10 container mx-auto px-4 py-8 md:py-16 lg:py-24" style={{ marginTop: 96 }}>
         {/* 1 columna en móvil, 2 en pantallas grandes */}
         <div className="max-w-5xl mx-auto grid gap-10 lg:gap-12 lg:grid-cols-[1.1fr,0.9fr] items-start">
           {/* Texto principal */}
