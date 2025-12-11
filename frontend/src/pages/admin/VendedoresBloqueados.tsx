@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { apiGet } from "@/lib/http";
@@ -13,11 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import BackButton from "@/components/BackButton";
 
-type Vendedor = { 
-  id: number; 
-  name: string; 
-  email: string; 
-  rol: string;
+type VendedorBloqueado = {
+  id: number;
+  name: string;
+  email: string;
   blocked?: boolean;
   vendor_status?: string | null;
   telefono?: string | null;
@@ -25,8 +24,8 @@ type Vendedor = {
   brand?: string | null;
 };
 
-export default function VendedoresAdmin() {
-  const [data, setData] = useState<Vendedor[]>([]);
+export default function VendedoresBloqueados() {
+  const [data, setData] = useState<VendedorBloqueado[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const navigate = useNavigate();
@@ -36,12 +35,12 @@ export default function VendedoresAdmin() {
     try {
       const users = await apiGet<any[]>("/users");
       
-      // Filtrar solo vendedores que NO están bloqueados
-      const vendedores = users.filter((u: any) => 
-        u.rol === 'vendedor' && !u.blocked && u.vendor_status !== 'rejected'
+      // Filtrar solo vendedores bloqueados o rechazados
+      const bloqueados = users.filter((u: any) => 
+        u.rol === 'vendedor' && (u.blocked || u.vendor_status === 'rejected')
       );
       
-      setData(vendedores);
+      setData(bloqueados);
     } catch (e: any) {
       if (e.status === 401) {
         toast.error("Sesión expirada. Inicia sesión de nuevo.");
@@ -50,7 +49,7 @@ export default function VendedoresAdmin() {
         toast.error("Acceso restringido: solo administradores.");
         navigate("/", { replace: true });
       } else {
-        toast.error(e.message ?? "Error al cargar vendedores.");
+        toast.error(e.message ?? "Error al cargar vendedores bloqueados.");
       }
     } finally {
       setLoading(false);
@@ -61,20 +60,20 @@ export default function VendedoresAdmin() {
     load();
   }, []);
 
-  const filtered = useMemo(() => {
+  const filtered = data.filter((u) => {
     const term = q.trim().toLowerCase();
-    if (!term) return data;
-    return data.filter((u) =>
+    if (!term) return true;
+    return (
       u.name?.toLowerCase().includes(term) ||
       u.email?.toLowerCase().includes(term) ||
       String(u.id).includes(term)
     );
-  }, [data, q]);
+  });
 
   if (loading) {
     return (
       <div className="p-4 text-sm text-muted-foreground">
-        Cargando vendedores…
+        Cargando vendedores bloqueados…
       </div>
     );
   }
@@ -83,7 +82,7 @@ export default function VendedoresAdmin() {
     <div className="p-4 space-y-4 pt-24">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-xl font-semibold">Vendedores</h1>
+          <h1 className="text-xl font-semibold">Vendedores Bloqueados</h1>
           <BackButton to="/admin" label="Volver al inicio" />
         </div>
 
@@ -103,26 +102,31 @@ export default function VendedoresAdmin() {
             <TableHead>ID</TableHead>
             <TableHead>Nombre</TableHead>
             <TableHead>Correo</TableHead>
+            <TableHead>Estado</TableHead>
             <TableHead>Teléfono</TableHead>
             <TableHead>Zona</TableHead>
             <TableHead>Marca</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filtered.map((v) => (
-            <TableRow key={v.id}>
-              <TableCell>{v.id}</TableCell>
-              <TableCell>{v.name}</TableCell>
-              <TableCell>{v.email}</TableCell>
-              <TableCell>{v.telefono ?? "—"}</TableCell>
-              <TableCell>{v.zona ?? "—"}</TableCell>
-              <TableCell>{v.brand ?? "—"}</TableCell>
+          {filtered.map((u) => (
+            <TableRow key={u.id}>
+              <TableCell>{u.id}</TableCell>
+              <TableCell>{u.name}</TableCell>
+              <TableCell>{u.email}</TableCell>
+              <TableCell>
+                {u.blocked && <span className="text-red-500">Bloqueado</span>}
+                {u.vendor_status === 'rejected' && <span className="text-orange-500">Rechazado</span>}
+              </TableCell>
+              <TableCell>{u.telefono ?? "—"}</TableCell>
+              <TableCell>{u.zona ?? "—"}</TableCell>
+              <TableCell>{u.brand ?? "—"}</TableCell>
             </TableRow>
           ))}
           {filtered.length === 0 && (
             <TableRow>
               <TableCell
-                colSpan={6}
+                colSpan={7}
                 className="text-center text-sm text-muted-foreground"
               >
                 Sin resultados.

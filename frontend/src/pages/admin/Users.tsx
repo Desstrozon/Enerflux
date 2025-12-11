@@ -31,6 +31,8 @@ type UserRow = {
   name: string;
   email: string;
   rol: string;
+  blocked?: boolean;
+  vendor_status?: string | null;
 
   // perfil cliente (aplanado)
   telefono?: string | null;
@@ -123,7 +125,11 @@ export default function UsersAdmin() {
     setLoading(true);
     try {
       const users = await apiGet<UserRow[]>("/users");
-      setData(users ?? []);
+      // Filtrar vendedores bloqueados de la tabla de usuarios
+      const filteredUsers = (users ?? []).filter((u: any) => 
+        !(u.rol === 'vendedor' && (u.blocked || u.vendor_status === 'rejected'))
+      );
+      setData(filteredUsers);
     } catch (e: any) {
       if (e.status === 401) {
         toast.error("Sesión expirada. Inicia sesión de nuevo.");

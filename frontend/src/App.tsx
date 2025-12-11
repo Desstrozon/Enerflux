@@ -28,6 +28,7 @@ import AdminRoute from "@/routes/AdminRoute";
 import AdminIndex from "@/pages/admin/Index";
 import UsersAdmin from "@/pages/admin/Users";
 import VendedoresAdmin from "@/pages/admin/Vendedores";
+import VendedoresBloqueados from "@/pages/admin/VendedoresBloqueados";
 import ProductosAdmin from "@/pages/admin/Productos";
 import VendorRequests from "@/pages/admin/VendorRequests";
 // PrimeReact y estilos
@@ -115,6 +116,14 @@ const App = () => {
                   element={
                     <AdminRoute>
                       <VendedoresAdmin />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/vendedores-bloqueados"
+                  element={
+                    <AdminRoute>
+                      <VendedoresBloqueados />
                     </AdminRoute>
                   }
                 />

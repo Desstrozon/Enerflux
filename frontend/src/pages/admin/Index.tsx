@@ -41,10 +41,15 @@ export default function AdminIndex() {
               <BadgePercent className="mr-2 h-4 w-4" /> Ver vendedores
             </Button>
           </Link>
-          <Link to="/vendors/requests" className="mt-4">
-            <Button className="w-full">
+          <Link to="/admin/vendedores-bloqueados" className="mt-2">
+            <Button variant="outline" className="w-full">
+              <BadgePercent className="mr-2 h-4 w-4" /> Vendedores bloqueados
+            </Button>
+          </Link>
+          <Link to="/vendors/requests" className="mt-2">
+            <Button variant="secondary" className="w-full">
               <BadgePercent className="mr-2 h-4 w-4" />
-              Solicitudes de registrados vendedor
+              Solicitudes de vendedor
             </Button>
           </Link>
         </Card>

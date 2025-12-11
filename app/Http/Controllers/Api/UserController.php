@@ -47,6 +47,8 @@ class UserController extends Controller
                 'name'      => $u->name,
                 'email'     => $u->email,
                 'rol'       => $u->rol,
+                'blocked'   => $u->blocked ?? false,
+                'vendor_status' => $u->vendor_status ?? null,
 
                 'telefono'       => $pc->telefono
                     ?? $pv->telefono
