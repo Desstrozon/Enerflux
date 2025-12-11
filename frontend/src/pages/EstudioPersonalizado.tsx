@@ -51,28 +51,28 @@ export default function EstudioPersonalizado() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-br from-background via-background to-background">
-      {/* “luces” de fondo */}
-      <div className="pointer-events-none absolute -top-32 -left-32 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-secondary/25 blur-3xl" />
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-background via-background to-background">
+      {/* "luces" de fondo */}
+      <div className="pointer-events-none absolute -top-32 left-0 h-72 w-72 rounded-full bg-primary/20 blur-3xl opacity-50" />
+      <div className="pointer-events-none absolute -bottom-32 right-0 h-80 w-80 rounded-full bg-secondary/25 blur-3xl opacity-50" />
 
-      <main className="relative z-10 container mx-auto px-4 py-8 md:py-16 lg:py-24" style={{ marginTop: 96 }}>
+      <div className="relative z-10 w-full px-4 py-8 md:py-16 lg:py-24" style={{ marginTop: 96 }}>
         {/* 1 columna en móvil, 2 en pantallas grandes */}
         <div className="max-w-5xl mx-auto grid gap-10 lg:gap-12 lg:grid-cols-[1.1fr,0.9fr] items-start">
           {/* Texto principal */}
-          <section>
-            <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
+          <section className="w-full min-w-0">
+            <p className="text-xs uppercase tracking-wider text-primary mb-4 break-words">
               Estudio personalizado
             </p>
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight break-words">
               Diseñamos tu sistema solar a medida.
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground mb-6">
+            <p className="text-base md:text-lg text-muted-foreground mb-6 break-words">
               Analizamos tu consumo, orientación de la vivienda y hábitos
               diarios para proponerte una instalación fotovoltaica optimizada:
               ni más paneles de los necesarios, ni menos.
             </p>
-            <p className="text-base md:text-lg text-muted-foreground mb-6">
+            <p className="text-base md:text-lg text-muted-foreground mb-6 break-words">
               El servicio es totalmente <strong>gratuito</strong> y sin
               compromiso. Un técnico del equipo de Enerflux se pondrá en
               contacto contigo para hacerte unas preguntas rápidas (potencia
@@ -80,18 +80,18 @@ export default function EstudioPersonalizado() {
               información, elaboraremos un estudio con:
             </p>
 
-            <ul className="text-base md:text-lg text-muted-foreground space-y-2 mb-8 list-disc pl-5">
+            <ul className="text-base md:text-lg text-muted-foreground space-y-2 mb-8 list-disc pl-5 break-words">
               <li>Producción anual estimada y ahorro aproximado.</li>
               <li>Recomendación de número de paneles, inversor y batería.</li>
               <li>Propuesta orientativa de kit de autoconsumo.</li>
             </ul>
 
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full min-w-0">
               <Button
                 size="lg"
                 onClick={handleRequest}
                 disabled={sending}
-                className="px-8 text-base"
+                className="px-8 text-base w-full sm:w-auto shrink-0"
               >
                 {sending
                   ? "Enviando solicitud..."
@@ -99,7 +99,7 @@ export default function EstudioPersonalizado() {
               </Button>
 
               {!isLogged && (
-                <p className="text-sm md:text-base text-muted-foreground">
+                <p className="text-sm md:text-base text-muted-foreground break-words w-full">
                   Necesitas tener sesión iniciada.{" "}
                   <button
                     type="button"
@@ -123,13 +123,13 @@ export default function EstudioPersonalizado() {
           </section>
 
           {/* Tarjetas laterales – AHORA visibles también en móvil (debajo del texto) */}
-          <section className="space-y-3">
+          <section className="space-y-3 w-full min-w-0">
             <Card className="border-border/60 bg-background/70 backdrop-blur">
               <CardContent className="p-5">
                 <p className="text-sm text-primary mb-2 font-semibold">
                   Resumen del estudio
                 </p>
-                <p className="text-base text-foreground">
+                <p className="text-base text-foreground break-words">
                   Ahorro estimado:{" "}
                   <span className="font-semibold">
                     hasta 60% en tu factura
@@ -145,7 +145,7 @@ export default function EstudioPersonalizado() {
                 <p className="text-sm text-primary mb-3 font-semibold">
                   ¿Qué analizamos?
                 </p>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm text-muted-foreground break-words">
                   <p>📈 Tu producción solar real, hora por hora.</p>
                   <p>☀️ La radiación solar específica de tu ubicación.</p>
                   <p>⚡ Cómo se comporta tu sistema bajo condiciones reales.</p>
@@ -163,7 +163,7 @@ export default function EstudioPersonalizado() {
                 <p className="text-sm text-primary mb-3 font-semibold">
                   Cómo lo hacemos
                 </p>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm text-muted-foreground break-words">
                   <p>
                     Te instalamos un dispositivo real que mide tu producción
                     solar antes de invertir.
@@ -192,14 +192,14 @@ export default function EstudioPersonalizado() {
             </Card>
 
             <Card className="border-border/60 bg-background/70 backdrop-blur">
-              <CardContent className="p-4 text-xs text-muted-foreground">
+              <CardContent className="p-4 text-xs text-muted-foreground break-words">
                 *El estudio que recibirás por correo es orientativo y no supone
                 una oferta comercial vinculante.
               </CardContent>
             </Card>
           </section>
         </div>
-      </main>
+      </div>
       <Footer />
     </div>
   );
