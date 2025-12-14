@@ -53,10 +53,15 @@
                         </p>
 
                         <!-- Botón -->
+                        @php
+                            $frontendUrl = trim(config('app.frontend_url', config('app.url')));
+                            $frontendUrl = rtrim($frontendUrl, '/');
+                            $loginUrl = $frontendUrl . '/login';
+                        @endphp
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:24px 0;">
                             <tr>
                                 <td align="center">
-                                    <a href="{{ rtrim(config('app.frontend_url', config('app.url')), '/') }}/login"
+                                    <a href="{{ $loginUrl }}"
                                        style="display:inline-block; padding:16px 40px; border-radius:999px;
                                               background:linear-gradient(135deg,#8b5cf6,#6366f1);
                                               color:#ffffff; text-decoration:none; font-size:16px; font-weight:600;
